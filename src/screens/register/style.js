@@ -3,12 +3,11 @@ import { StyleSheet } from "react-native";
 const styles = StyleSheet.create({
     container:{
         flex:1,
-        backgroundColor:'#fff',
         alignItems:'center'
     },
     inputView:{
         marginTop:40,
-        height:400,
+        // height:350,
         justifyContent:'space-between',
         alignSelf:'center'
     },

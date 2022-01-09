@@ -4,7 +4,7 @@ const styles = StyleSheet.create({
 
     regularText:{
         fontSize:14, 
-        color:'#0B155A',
+        color:'#000',
         lineHeight:14,
         fontWeight:'normal',
         fontFamily:'TT Commons'

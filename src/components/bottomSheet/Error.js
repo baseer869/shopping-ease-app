@@ -1,34 +1,19 @@
-import React from 'react'
-import { View, Text } from 'react-native'
+import Toast from 'react-native-toast-message';
+import { Button } from 'react-native'
 
-import Animated from 'react-native-reanimated';
-import BottomSheet from 'reanimated-bottom-sheet';
+export function Error(props) {
+  const showToast = () => {
+    Toast.show({
+      type: 'success',
+      text1: 'Hello',
+      text2: 'This is some something 👋'
+    });
+  }
 
-const Error = () => {
-    
-  const sheetRef = React.useRef(null);
-  const renderContent = () => (
-    <View
-      style={{
-        backgroundColor: 'rgb(11,21,90)',
-        padding: 16,
-        height: 50,
-      }}
-    >
-      <Text style={{textAlign:'center', color:'#fff', letterSpacing:1, fontSize:14}}>Swipe down to close</Text>
-    </View>
-  );
-
-    return (
-
-        <BottomSheet
-        style={{}}
-        ref={sheetRef}
-        snapPoints={[20, 50, 0]}
-        borderRadius={0}
-        renderContent={renderContent}
-      />
-    )
+  return (
+    <Button
+      title='Show toast'
+      onPress={showToast}
+    />
+  )
 }
-
-export default Error

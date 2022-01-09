@@ -1,18 +1,14 @@
 import { StyleSheet } from "react-native";
+import Theme from './../../theme/colors';
 
 const styles = StyleSheet.create({
     container:{
-        // flex:1,
-        height:35,
-        width:'90%',
-        backgroundColor:'rgb(11,21,90)',
-        alignSelf:'center',
+        height:45,
+        backgroundColor:Theme.primary,
         justifyContent:'center',
         alignItems:'center',
-        borderRadius:30,
+        borderRadius:4,
         flexDirection:'row',
-
-
     },
     button2:{
         backgroundColor:'#fff',

@@ -76,7 +76,7 @@ const AcountHomeScreen = ({navigation}) => {
                 
              
                </View>
-               <TouchableOpacity activeOpacity={0.4} style={{paddingHorizontal:20, flexDirection:'row', alignItems:'center', width:'32%', justifyContent:'space-between'}}>
+               <TouchableOpacity  activeOpacity={0.4} style={{paddingHorizontal:20, flexDirection:'row', alignItems:'center', width:'32%', justifyContent:'space-between'}}>
                            <Image source={LOGOUT} style={[styles.icon]} />
                            <Text style={[commonStyle.h2,{textAlign:'left'} ]}>Log Out </Text>
 

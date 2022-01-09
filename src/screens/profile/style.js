@@ -11,6 +11,14 @@ const styles = StyleSheet.create({
         justifyContent:'space-between',
         alignSelf:'center'
     },
+    title:{
+        fontSize:14,
+        fontWeight:'500',
+        fontStyle:'normal',
+        letterSpacing:0.4,
+        paddingVertical:6
+        
+    }
 });
 
 export default styles;

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Image, Text, View, StyleSheet } from 'react-native';
 import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs';
+import { createDrawerNavigator } from 'react-navigation-drawer';
 
 import { createAppContainer,  } from 'react-navigation';
 import { createStackNavigator ,TransitionPresets} from 'react-navigation-stack';
@@ -22,6 +23,11 @@ import ChangePaymentScreen from './../screens/payment/ChangePaymentScreen';
 import FavouriteScreen from './../screens/favorite/index';
 import SearchShopScreen from './../screens/searchshop/SearchScreen';
 import AddAddressScreen from './../screens/addAddress/AddAddressScreen';
+import ShopMapScreen from '../screens/ShopScreen/index';
+import ShopListScreen from '../screens/shop/index';
+import DashBoard from './../screens/dashboard/index';
+import SplashScreen from '../screens/splash/SplashScreen';
+import DrawerItem from '../components/drawer/DrawerItem';
 
 const HomeStack = createStackNavigator({
     Home:{screen: HomeScreen},
@@ -127,6 +133,30 @@ Account: {
 },
 );
 
+let AppStack = createStackNavigator({
+    ShopMapScreen:ShopMapScreen,
+    ShopListScreen: ShopListScreen,  
+    ShopDashBoard:DashBoard,
+    ProductDetailScreen: ProductDetailScreen,
+    Profile: AccountInformationScreen
+
+
+    // Search: {screen: SearchScreen},
+// AddAddress: {screen: AddAddressScreen}
+
+},{
+    initialRouteName:"ShopMapScreen",
+    headerMode:'none'
+})
+
+let DrawerStack =   createDrawerNavigator({
+    App: AppStack
+},{
+    initialRouteName:'App',
+    contentComponent: (props)=>  <DrawerItem {...props} />
+});
+
+
 const AuthStack = createStackNavigator({
 Login: {screen: LoginScreen},
 Register: {screen: RegisterScreen}
@@ -136,13 +166,14 @@ Register: {screen: RegisterScreen}
 }) 
 
 const MainStack = createStackNavigator({
+Splash: SplashScreen,
+// DashBoard: DashBoard ,
 Auth: AuthStack,
-App:BottomTabs,
-Search: {screen: SearchScreen},
-AddAddress: {screen: AddAddressScreen}
+App: DrawerStack,
+// App:BottomTabs,
 }, 
 {
-    initialRouteName:'Auth',
+    initialRouteName:'App',
     headerMode:'none',
     defaultNavigationOptions: {
         ...TransitionPresets.SlideFromRightIOS,

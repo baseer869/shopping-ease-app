@@ -1,33 +1,33 @@
-import React, {useRef, useState} from 'react'
-import { View, Text, TextInput, Image } from 'react-native'
+import React, {useRef, useState} from 'react';
+import {View, Text, TextInput, Image} from 'react-native';
 import styles from './style';
 import HorizontalLine from '../../components/horizontalLine/index';
+import Theme from '../../theme/colors';
 
-const NewInput = ({placeholder, value, onChangeText, icon, refer, onSubmitEditing, onfocus, active}) => {
+const NewInput = ({
+  placeholder,
+  value,
+  onChangeText,
+  icon,
+  refer,
+  onSubmitEditing,
+  onfocus,
+  active,
+  border
+}) => {
+  return (
+    <TextInput
+      style={border? styles.input: styles.input2 }
+      placeholder={placeholder}
+      value={value}
+      onChangeText={onChangeText}
+      ref={refer}
+      onSubmitEditing={onSubmitEditing}
+      returnKeyType={'next'}
+      onFocus={onfocus}
+      placeholderTextColor={'#000'}
+    />
+  );
+};
 
-
-    return (
-            <View style={{ height:38,  }}>
-                <View style={{flexDirection:'row', alignItems:'center', justifyContent:'space-between', width:'60%'}}>
-
-                <Image style={{width:18, height:18}} source={icon}/>
-            <TextInput 
-            placeholder={placeholder}
-            value={value}
-            onChangeText={onChangeText}
-            style={[styles.input2]  }  
-            placeholderTextColor={ 'gray' }
-            ref={refer}
-            onSubmitEditing={onSubmitEditing}
-            returnKeyType={'next'}
-            onFocus={onfocus}
-            />
-                </View>
-
-            <HorizontalLine  opacity/>
-            </View>
-
-    )
-}
-
-export default NewInput
+export default NewInput;

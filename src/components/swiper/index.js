@@ -6,9 +6,7 @@ import Swiper from 'react-native-swiper'
 
  
 const SwiperComponent = ({width, height})=> {
-//   width && { width: width }, height && {height: height}
     return (
-      <View style={{flex:1}}> 
       <Swiper style={styles.wrapper}  horizontal={true} showsPagination={false} autoplay={2.5} autoplay={true} >
         <View style={[styles.slide1,  ]}>
           <Image resizeMode={'cover'} style={{ height:200,
@@ -20,7 +18,6 @@ const SwiperComponent = ({width, height})=> {
 
         </View>
       </Swiper>
-      </View>
 
     )
   };

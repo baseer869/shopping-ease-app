@@ -1,6 +1,7 @@
 import React from 'react'
-import { View, Text } from 'react-native'
-import LoginScreen from './LoginScreen'
+import LoginScreen from './LoginScreen';
+import { connect } from 'react-redux';
+import { loginActionHandler } from './../../redux/actions/user';
 
 const index = (props) => {
     return (
@@ -8,4 +9,11 @@ const index = (props) => {
     )
 }
 
-export default index
+
+const mapDispatchToProps = (dispatch)=>{
+    return{
+          login: (data)=> dispatch(loginActionHandler(data))
+    }
+}
+
+export default  connect(undefined, mapDispatchToProps) (index)

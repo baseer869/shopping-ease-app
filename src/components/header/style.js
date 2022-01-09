@@ -1,15 +1,13 @@
 import { StyleSheet, } from 'react-native'
+import Theme from '../../theme/colors'
 
 
 const styles = StyleSheet.create({
 container:{
-    height:50,
-    paddingTop:5,
-    paddingHorizontal:20,
-    justifyContent:'space-between',
+    height:55,
     flexDirection:'row',
     alignItems:"center",
-    width:'100%'
+    backgroundColor:Theme.primary
 },
 pickerContainer:{
     width:137,
@@ -18,6 +16,16 @@ pickerContainer:{
     borderWidth:0.5,opacity:0.3,
     justifyContent:'center',
     
+},
+title:{
+    fontStyle:'normal',
+    fontWeight:'700',
+    fontSize:16,
+    lineHeight:16,
+    textAlign:'center',
+    color:'#fff',
+    letterSpacing:0.5,
+    width:200
 }
 
 })
