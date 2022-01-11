@@ -1,5 +1,5 @@
 import { ADD_TO_CART, CLEAR_CART,REMOVE_FROM_CART  } from '../constant/index';
-import { AddToCart } from '../../../api/Methods';
+import { AddToCart, listCart } from '../../../api/Methods';
 
 export const addToCart = (payload) =>{
     return {
@@ -40,3 +40,16 @@ export const AddToCartActionHandler =   data => dispatch => {
         });
     });
   };
+
+  
+export const listCartActionHandler =   data => dispatch => {
+  return new Promise(async function (resolve) {
+    listCart(data)
+      .then(response => {
+        return resolve(response);
+      })
+      .catch(() => {
+        return resolve(false);
+      });
+  });
+};

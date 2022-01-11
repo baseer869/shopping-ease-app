@@ -42,10 +42,13 @@ export const listAllProduct = (params, token) => {
     return Api(`${apiConstant.LIST_PRODUCT}?id=${'1'}`, 'GET',  token )
 }  
 
-
-
 //LIST product 
 export const AddToCart = (params, token) => {
     return Api(`${apiConstant.ADD_TO_CART}?id=${params?.ProductId}&userId=${params?.UserId}`, 'POST',  params, token )
 }  
-// addToCart?id=4&userId=1 
+
+
+// list cart
+export const listCart = (id, token) => {
+    return Api(`${apiConstant.LIST_CART}?id=${id}`, 'GET', token )
+} 

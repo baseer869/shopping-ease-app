@@ -62,7 +62,7 @@ React.useEffect(()=>{
         />
         <Item
           title={'Cart'}
-          onItemPress={() => navigation.navigate('Profile')}
+          onItemPress={() => navigation.navigate('Cart')}
           icon={'cart-outline'}
         />
         <Item

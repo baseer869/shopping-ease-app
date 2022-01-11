@@ -15,9 +15,9 @@ const styles = StyleSheet.create({
         fontWeight:'normal'
     },
     h3:{
-        fontSize:12,
-        color:"#0B155A",
-        lineHeight:12,
+        fontSize:16,
+        color:"#000",
+        lineHeight:18,
         fontWeight:'normal',
         fontFamily:"TT Commons",
         

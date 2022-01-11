@@ -31,9 +31,9 @@ const HomeDetailScreen = ({navigation, addItemToCart, route}) => {
    console.log('item in detail--->', item);
 
     let {price, id} = item;
-    let response = await addItemToCart({
-      quantity: 1,
-      totalPrice: parseInt(price),
+    
+    let response = await addItemToCart( {
+      price: parseInt(price),
       UserId: 1,
       ProductId: id,
     });

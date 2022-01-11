@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import CartHomeScreen from './CartHomeScreen'
 import { connect } from 'react-redux';
-import { clearCartAction, removeFromCart } from '../../redux/actions/cart';
+import { clearCartAction, listCartActionHandler, removeFromCart } from '../../redux/actions/cart';
 import { addToCart } from './../../redux/actions/cart';
 import {View, Text, Image } from 'react-native';
 
@@ -39,7 +39,8 @@ const mapDispatchToProps = (dispatch) =>{
    return {
       clearCartAction: () => dispatch(clearCartAction()),
       addItemToCart: (product) => dispatch(addToCart(product)),
-      removeFromCart :(product) => dispatch(removeFromCart(product))
+      removeFromCart :(product) => dispatch(removeFromCart(product)),
+      listCart: (id)=> dispatch(listCartActionHandler(id)),
    }
 }
 

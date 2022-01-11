@@ -26,7 +26,8 @@ const Theme = {
     // card:'#ffeee6'
     card:'#ffece3',
     back2:'#dedede',
-    white2:'#fff'
+    white2:'#fff',
+    border: '#CECECE',
 
 }
 export default Theme;
