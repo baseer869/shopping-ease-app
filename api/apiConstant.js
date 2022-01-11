@@ -15,8 +15,7 @@ const BASE_URL = 'http://10.0.2.2:3000/api/v1';
     LIST_PRODUCT: BASE_URL + '/listProduct',
     LIST_SHOP_CATEGORIES: BASE_URL + '/category',
     FEATURED_PRODUCT: BASE_URL + '/featured-list',
-    
-
+    ADD_TO_CART: BASE_URL + '/addToCart',
 
 }
 

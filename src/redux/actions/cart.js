@@ -1,4 +1,5 @@
 import { ADD_TO_CART, CLEAR_CART,REMOVE_FROM_CART  } from '../constant/index';
+import { AddToCart } from '../../../api/Methods';
 
 export const addToCart = (payload) =>{
     return {
@@ -26,3 +27,16 @@ export const clearCartAction = () =>{
  }
 }
 
+
+export const AddToCartActionHandler =   data => dispatch => {
+    console.log('cart item in action-->', data)
+    return new Promise(async function (resolve) {
+      AddToCart(data)
+        .then(response => {
+          return resolve(response);
+        })
+        .catch(() => {
+          return resolve(false);
+        });
+    });
+  };

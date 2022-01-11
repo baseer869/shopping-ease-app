@@ -122,8 +122,8 @@ const DashBoard = ({navigation, listCategory, listProduct, listAllProduct}) => {
     );
   }
 
-  function ListProduct({name, description, rate, price, image}) {
-    let item = {name, description, rate, image, price};
+  function ListProduct({name, description, rate, price, image, id}) {
+    let item = {name, description, rate, image, price, id};
     return (
       <TouchableOpacity
         onPress={() => navigation.navigate('ProductDetailScreen', {item: item})}

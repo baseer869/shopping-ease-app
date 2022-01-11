@@ -8,7 +8,7 @@ import { createStackNavigator ,TransitionPresets} from 'react-navigation-stack';
 import HomeScreen from './../screens/home/Index';
 import {  HOME_IN_ACTIVE, HOME_ACTIVE, CART, ACCOUNT_ACTIVE, ACCOUNT_IN_ACTIVE } from '../theme/images';
 import commonStyle from '../theme/style';
-import ProductDetailScreen from './../screens/detail/ProductDetailScreen';
+import ProductDetailScreen from './../screens/detail/index';
 import ShopCategoryScreen from '../screens/category/ShopCategoryScreen';
 import ProductHomeScreen from './../screens/productpage/index';
 import CartHomeScreen from './../screens/cart/index';
@@ -133,29 +133,34 @@ Account: {
 },
 );
 
+
+/**************************** APP STACK ************************/
+
 let AppStack = createStackNavigator({
     ShopMapScreen:ShopMapScreen,
     ShopListScreen: ShopListScreen,  
     ShopDashBoard:DashBoard,
     ProductDetailScreen: ProductDetailScreen,
-    Profile: AccountInformationScreen
-
-
-    // Search: {screen: SearchScreen},
-// AddAddress: {screen: AddAddressScreen}
+    Profile: AccountInformationScreen,
+    Cart: CartHomeScreen
 
 },{
     initialRouteName:"ShopMapScreen",
     headerMode:'none'
 })
 
+
+/**************************** DRAWER ************************/
+
 let DrawerStack =   createDrawerNavigator({
     App: AppStack
-},{
+},
+{
     initialRouteName:'App',
     contentComponent: (props)=>  <DrawerItem {...props} />
 });
 
+/**************************** AUTH ************************/
 
 const AuthStack = createStackNavigator({
 Login: {screen: LoginScreen},
@@ -165,12 +170,15 @@ Register: {screen: RegisterScreen}
     headerMode:'none'
 }) 
 
+/**************************** APP ************************/
+
 const MainStack = createStackNavigator({
 Splash: SplashScreen,
 // DashBoard: DashBoard ,
 Auth: AuthStack,
 App: DrawerStack,
 // App:BottomTabs,
+
 }, 
 {
     initialRouteName:'App',

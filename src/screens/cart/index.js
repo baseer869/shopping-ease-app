@@ -38,7 +38,7 @@ for (let key in store.cart.items ) {
 const mapDispatchToProps = (dispatch) =>{
    return {
       clearCartAction: () => dispatch(clearCartAction()),
-      addToCart: (product) => dispatch(addToCart(product)),
+      addItemToCart: (product) => dispatch(addToCart(product)),
       removeFromCart :(product) => dispatch(removeFromCart(product))
    }
 }

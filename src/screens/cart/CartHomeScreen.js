@@ -8,7 +8,7 @@ import HorizontalLine from '../../components/horizontalLine/index';
 import Button from '../../components/button/index';
 import EmptyCart from '../../components/UI/EmptyCart';
 
-const CartHomeScreen = ({navigation, cartItems, totalAmount, subTotalCounter, clearCartAction, addToCart, removeFromCart}) => {
+const CartHomeScreen = ({navigation, cartItems, totalAmount, subTotalCounter, clearCartAction, addItemToCart, removeFromCart}) => {
 
 
    
