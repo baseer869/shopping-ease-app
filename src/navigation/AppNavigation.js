@@ -142,7 +142,8 @@ let AppStack = createStackNavigator({
     ShopDashBoard:DashBoard,
     ProductDetailScreen: ProductDetailScreen,
     Profile: AccountInformationScreen,
-    Cart: CartHomeScreen
+    Cart: CartHomeScreen,
+    CheckOutScreen: CheckOutScreen
 
 },{
     initialRouteName:"ShopMapScreen",

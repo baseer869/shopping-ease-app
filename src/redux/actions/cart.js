@@ -1,11 +1,19 @@
-import { ADD_TO_CART, CLEAR_CART,REMOVE_FROM_CART  } from '../constant/index';
+import { ADD_TO_CART, CLEAR_CART,REMOVE_FROM_CART,  SET_CART} from '../constant/index';
 import { AddToCart, listCart } from '../../../api/Methods';
+
+
+export const setCart = (payload) =>{
+  return {
+      type: SET_CART ,
+      payload: payload       
+  }
+
+}
 
 export const addToCart = (payload) =>{
     return {
         type: ADD_TO_CART,
         payload: payload       
-    
     }
 
 }
@@ -19,7 +27,6 @@ export const removeFromCart = (payload) =>{
 
 }
 
-
 export const clearCartAction = () =>{
  return {
      type: CLEAR_CART,
@@ -29,10 +36,10 @@ export const clearCartAction = () =>{
 
 
 export const AddToCartActionHandler =   data => dispatch => {
-    console.log('cart item in action-->', data)
     return new Promise(async function (resolve) {
       AddToCart(data)
         .then(response => {
+           dispatch(addToCart(data.id));
           return resolve(response);
         })
         .catch(() => {
@@ -42,10 +49,13 @@ export const AddToCartActionHandler =   data => dispatch => {
   };
 
   
+  
 export const listCartActionHandler =   data => dispatch => {
   return new Promise(async function (resolve) {
     listCart(data)
       .then(response => {
+        console.log('cart list response--->',response?.data)
+        dispatch(setCart(response?.data.result));
         return resolve(response);
       })
       .catch(() => {

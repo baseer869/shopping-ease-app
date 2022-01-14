@@ -44,6 +44,7 @@ export const listAllProduct = (params, token) => {
 
 //LIST product 
 export const AddToCart = (params, token) => {
+    console.log('params==?', params)
     return Api(`${apiConstant.ADD_TO_CART}?id=${params?.ProductId}&userId=${params?.UserId}`, 'POST',  params, token )
 }  
 

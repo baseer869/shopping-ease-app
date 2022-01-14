@@ -1,139 +1,193 @@
-import React, {useState} from 'react'
-import { ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import React, {useEffect, useState} from 'react';
+import {
+  ScrollView,
+  Text,
+  TextInput,
+  Image,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import Loading from '../../components/activityIndicator/ActivityIndicator';
 import Header from '../../components/header/index';
 import styles from './style';
-import style from '../../theme/style';
-import CheckBox from '../../components/checkbox/index';
-import HorizontalLine from '../../components/horizontalLine/index';
-import commonStyle from '../../theme/style';
-import Button from '../../components/button/index';
+import {Icon} from 'react-native-vector-icons/MaterialCommunityIcons';
+import Theme from '../../theme/colors';
+import Button from '../../components/button';
+import Modal from 'react-native-modal';
+import NewInput from '../../components/input/NewInput';
 
-const CheckOutScreen = ({navigation, cartItems,totalAmount, subTotalCounter}) => {
-    console.log('tocheckout', cartItems)
-    const [checkBox, setCheckBox] = useState('')
-    const [textArea, setTextArea] = useState('');
+const CheckOutScreen = ({navigation, listCart}) => {
+  const [loading, setLoading] = React.useState(false);
+  const [cartList, setCartList] = React.useState([]);
+  const [totalPrice, setTotal] = React.useState(null);
+  const [isVisible, setIsVisible] = React.useState(false);
+
+  async function listCartItem() {
+    let id = 1;
+    let response = await listCart(id);
+    console.log('response in checkout-->', response);
+    if (response.status === 200) {
+      setLoading(false);
+      setCartList(response.data?.result);
+      setTotal(response.data?.cartTotal.cartTotal);
+    } else if (response.status === 400) {
+      setLoading(false);
+      setCartList([]);
+      setTotal(null);
+    }
+  }
+
+  useEffect(() => {
+    listCartItem();
+  }, []);
+
+  function Item({price, sum, image, quantity, id, totalPrice, Product}) {
+    // var product = {price, sum, quantity, id};
     return (
-        <View style={[styles.container]}>
-            <Header goback width  title={'CheckOut'} navigation={navigation}/>
-          <View style={{flex:1, justifyContent:'space-between',}}>
-           <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{alignItems:'center',  }}>
-
-              <View style={[styles.addressView]}>
-                  <View style={[styles.alignViewStyle]}>
-                <Text style={[style.heading]}>Your delivery address</Text>
-               <TouchableOpacity style={{padding:2}} onPress={()=>alert('chnage address ')}>
-               <Text style={[style.heading, { color:'#F54F22'}]}>Change</Text>
-               </TouchableOpacity>
-               </View>
-
-               {/* adfress view */}
-               <View style={{flex:1, paddingTop:20, paddingBottom:20, justifyContent:'space-between', }}>
-                <View style={[styles.alignViewStyle, {}]}>
-               <Text style={[style.h2, { fontWeight:'bold'}]}>Change:</Text>
-               <Text style={[style.h3,{width:'85%', fontSize:10,paddingLeft:15}]}>that might appear on the page you’re looking for. For example,"</Text>
-
-                </View>
-                <View style={[styles.alignViewStyle, {}]}>
-               <Text style={[style.h2, { fontWeight:'bold'}]}>City:</Text>
-               <Text style={[style.h3,{width:'85%', fontSize:10, paddingLeft:22}]}>that might appear on the page you’re looking for. For example,"</Text>
-
-                </View>  
-                 <View style={[styles.alignViewStyle, {}]}>
-               <Text style={[style.h2, { fontWeight:'bold'}]}>Market:</Text>
-               <Text style={[style.h3,{width:'85%', fontSize:10, paddingLeft:17}]}>F-7 Markaz </Text>
-
-                </View>
+      <View style={styles.itemContainer}>
+        <View style={styles.innerItemContainer}>
+          <Image
+            source={require('../../../assets/pepsi.jpg')}
+            resizeMode={'contain'}
+            style={{width: 100, height: 100}}
+          />
+          <View style={{paddingLeft: 10}}>
+            <Text
+              numberOfLines={1}
+              style={styles.name}>{`${Product?.name}`}</Text>
+            <View style={{paddingTop: 8}}>
+              <Text style={styles.price}>{`Total price: ${totalPrice}`}</Text>
+              <Text style={styles.price}>{`Quantity: ${quantity}`}</Text>
             </View>
-              </View>
-                {/* payment methond */}
-                <View style={[styles.paymentView, {marginTop:10}]}>
-                <View style={[styles.alignViewStyle]}>
-                <Text style={[style.heading]}>Payment method</Text>
-               <TouchableOpacity style={{padding:2}} onPress={()=>navigation.navigate('Payment')}>
-               <Text style={[style.heading, { color:'#F54F22'}]}>Change</Text>
-               </TouchableOpacity>
-               </View>
-
-               
-               
-
-               {/*  */}
-               <View style={[styles.alignViewStyle, {paddingTop:20}]}>
-                <Text style={[style.h2]}>Cash on delivery</Text>
-                <CheckBox/>
-               </View>
-               
-                </View>
-
-                
-                {/* product detail view */}
-                <View style={[styles.detailView, {marginTop:10}]}>
-                    <View style={[styles.headerView]}>
-                    <Text style={[style.h2]}>Product name</Text>
-                    <Text style={[style.h2]}>Quantity</Text>
-                    <Text style={[style.h2]}>Amount</Text>
-                    </View>
-                  {cartItems.map((item)=>{
-                      return (
-<>
-<View style={[styles.itemView]}>
-               <Text style={[style.h3,{width:'45%',  paddingLeft:15}]}>{item.name}</Text>
-               <Text style={[style.h3,{width:'45%', left:34, }]}>{item.quantity}</Text>
-               <Text style={[style.h3,{width:'45%', }]}>{item.sum}</Text>
-                    </View>
-               <HorizontalLine opacity />
-               </>
-
-                      )
-                  })}
-
-                    
-
-                </View>
-                {/* cart detail */}
-                <View style={[styles.cartView]}>
-                <Text style={[commonStyle.heading]}>{'Cart detail'}</Text>
-                </View>
-                <View style={[styles.cartDetail]}>
-                    <View style={[styles.cartItemStyle]}>
-                    <Text style={[commonStyle.h3, styles.letterSpacingStyle]}>{`Subtotal ${subTotalCounter}:`}</Text>
-                    <Text style={[commonStyle.h3, styles.letterSpacingStyle]}>{`Rs.${totalAmount}`}</Text>
-                    </View>
-                    <View style={[styles.cartItemStyle]}>
-                    <Text style={[commonStyle.h3, styles.letterSpacingStyle]}>{'Discount :'}</Text>
-                    <Text style={[commonStyle.h3,styles.letterSpacingStyle]}>{'Rs.0'}</Text>
-                    </View>
-                    <View style={[styles.cartItemStyle]}>
-                    <Text style={[commonStyle.h3, styles.letterSpacingStyle]}>{'Packing / Delivery fee :'}</Text>
-                    <Text style={[commonStyle.h3, styles.letterSpacingStyle]}>{'Rs.0'}</Text>
-                    </View>
-                </View>
-                <HorizontalLine />
-                <View style={[styles.cartItemStyle, {padding:16}]}>
-                    <Text style={[commonStyle.h3,{fontWeight:'bold', letterSpacing:2}]}>{'Total :'}</Text>
-                    <Text style={[commonStyle.h3, {fontWeight:'bold', letterSpacing:2}]}>{`Rs.${totalAmount}/-`}</Text>
-                    </View>
-                   <View style={[styles.textArea]}>
-                       <TextInput
-                       placeholder={'Write a Comments'}
-                       value={textArea}
-                       multiline={true}
-                       numberOfLines={4}
-                       onChangeText={(text)=>setTextArea(text)}
-                       style={{ height:200, textAlignVertical: 'top', fontSize:14, color:'#0B155A' }}
-                       />
-                   </View>
-
-           </ScrollView>
-
-           </View>
-           <View style={[styles.buttonView]}>
-           <Button  title={'Place order'} onButtonPress={()=>alert('suucess')} />
-
-           </View>
+          </View>
         </View>
-    )
-}
+      </View>
+    );
+  }
 
-export default CheckOutScreen
+  return (
+    <View style={styles.container}>
+      <Header goback width title={'CheckOut'} navigation={navigation} />
+      <ScrollView>
+        <View style={styles.topCartView}>
+          <Text style={styles.title}>Customer's Shipping Address</Text>
+          <View style={styles.addressView}>
+            <Text
+              style={
+                styles.text
+              }>{`Currently you have\n no saved address`}</Text>
+            <TouchableOpacity
+              onPress={() => setIsVisible(true)}
+              style={styles.addressButton}>
+              <Text style={styles.addText}>Add New Address</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+        <View>
+          {cartList.length !== 0 ? (
+            loading ? (
+              <Loading animating={loading} />
+            ) : (
+              cartList?.map(item => {
+                return <Item {...item} />;
+              })
+            )
+          ) : (
+            <Text>No item in cart</Text>
+          )}
+        </View>
+        <View style={styles.summaryView}>
+          <Text style={styles.title}>Order Summary</Text>
+          <View style={styles.textView}>
+            <Text style={[styles.price, {opacity: 0.6}]}>Total Quantity</Text>
+            <Text style={[styles.price, {opacity: 0.6}]}>10</Text>
+          </View>
+          <View style={styles.textView}>
+            <Text style={[styles.price, {opacity: 0.6}]}>Total Price</Text>
+            <Text style={[styles.price, {opacity: 0.6}]}>10</Text>
+          </View>
+          <View style={styles.textView}>
+            <Text style={[styles.price, {opacity: 0.6}]}>Shipping Charges</Text>
+            <Text style={[styles.price, {opacity: 0.6}]}>30</Text>
+          </View>
+          <View style={{borderWidth: 0.5, opacity: 0.4, paddingTop: 12}} />
+          <View style={styles.textView}>
+            <Text style={[styles.price, {fontWeight: '700'}]}>
+              Total Payment
+            </Text>
+            <Text
+              style={[
+                styles.price,
+                {fontWeight: '700', color: Theme.primary},
+              ]}>{`${'3000'}/-`}</Text>
+          </View>
+        </View>
+      </ScrollView>
+      <View style={styles.bottomView}>
+        <View style={styles.innerview}>
+          <Text style={styles.title}>{`${'3000'}/-`}</Text>
+          <View style={{width: 150}}>
+            <Button title={'Checkout'} onButtonPress={() => alert('heelo')} />
+          </View>
+        </View>
+      </View>
+      <Modal
+        isVisible={isVisible}
+        animat
+        animationIn={'bounceInUp'}
+        animationOut={'slideOutDown'}
+        backdropColor={'black'}>
+        <View style={styles.modelView}>
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+            }}>
+            <Text style={[styles.title, {paddingBottom: 20}]}>
+              Add Shipping Address
+            </Text>
+            <TouchableOpacity
+              onPress={() => setIsVisible(false)}
+              style={{padding: 5}}>
+              <Text
+                style={[
+                  styles.title,
+                  {fontWeight: '400', paddingBottom: 20, opacity: 0.9},
+                ]}>
+                {'Close'}
+              </Text>
+            </TouchableOpacity>
+          </View>
 
+          <ScrollView>
+            <View style={styles.inputView}>
+              <Text style={styles.inputText}>City</Text>
+              <TextInput placeholder="City" style={styles.input} />
+            </View>
+            <View style={styles.inputView}>
+              <Text style={styles.inputText}>City</Text>
+              <TextInput placeholder="City" style={styles.input} />
+            </View>
+            <View style={styles.inputView}>
+              <Text style={styles.inputText}>City</Text>
+              <TextInput placeholder="City" style={styles.input} />
+            </View>
+            <View style={styles.inputView}>
+              <Text style={styles.inputText}>City</Text>
+              <TextInput placeholder="City" style={styles.input} />
+            </View>
+            <View style={{marginTop: 15}}>
+              <Button
+                onButtonPress={() => alert('subkit address')}
+                title={'Add Address'}
+              />
+            </View>
+          </ScrollView>
+        </View>
+      </Modal>
+    </View>
+  );
+};
+
+export default CheckOutScreen;

@@ -1,6 +1,7 @@
 import React from 'react'
 import CheckOutScreen from './CheckOutScreen'
 import { connect } from 'react-redux';
+import { listCartActionHandler } from '../../redux/actions/cart';
 
 
 
@@ -30,6 +31,13 @@ const mapStateToProps =(store) =>{
         subTotalCounter: store.cart.subTotalCounter
      }
  }
+
+ function mapDispatchToProps(dispatch) {
+    return{
+       listCart: (id) => dispatch(listCartActionHandler(id))
+    }
+
+ }
  
 
-export default connect(mapStateToProps, undefined)(index) 
+export default connect(mapStateToProps, mapDispatchToProps)(index) 

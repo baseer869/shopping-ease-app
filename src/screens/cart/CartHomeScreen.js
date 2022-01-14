@@ -10,6 +10,10 @@ import EmptyCart from '../../components/UI/EmptyCart';
 import {AsyncStorage} from '@react-native-async-storage/async-storage';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Theme from '../../theme/colors';
+import Loading from '../../components/activityIndicator/ActivityIndicator';
+
+
+
 const CartHomeScreen = ({
   listCart,
   navigation,
@@ -17,24 +21,23 @@ const CartHomeScreen = ({
   totalAmount,
   subTotalCounter,
   clearCartAction,
-  addItemToCart,
   removeFromCart,
+  addItemToCart,
+  cartListItem
 }) => {
   const [loading, setLoading] = React.useState(false);
   const [cartList, setCartList] = React.useState([]);
   const [totalPrice, setTotal] = React.useState(null);
+  const [refresh, setRefresh] = React.useState(false);
 
   function clearCart() {
     clearCartAction();
   }
 
   async function listCartItem() {
-    // setLoading(true);
     // let user = await AsyncStorage.getItem('user');
     let id = 1;
     let response = await listCart(id);
-    console.log('cart list response-->', response);
-
     if (response.status === 200) {
       setLoading(false);
       setCartList(response.data?.result);
@@ -45,17 +48,30 @@ const CartHomeScreen = ({
       setTotal(null);
     }
   }
+ async function AddItem(totalPrice,  ProductId, id ) {
+     console.log(totalPrice, ProductId, id );
+ const response = await  addItemToCart({
+  ProductId: ProductId,
+  price: parseInt(totalPrice),
+  UserId: 1,
+  id: id  //cart id;
+});
+console.log('response -->', response);
+ }
+
   useEffect(() => {}, [cartItems]);
 
   useEffect(() => {
     listCartItem();
-  }, []);
+    return () =>{
+      setCartList([]);
+    }
+  }, [refresh]);
 
-  function ItemInCart({price, sum, image, quantity, id, totalPrice, Product}) {
-    var product = {price, sum, quantity, id};
-    const {name} = Product;
-    console.log('Product', Product);
+  
 
+    function ItemInCart({price, sum, image, quantity, id,  totalPrice, Product}) {
+    // var product = {price, sum, quantity, id};
     return (
       <View style={styles.itemContainer}>
         <View style={styles.innerItemContainer}>
@@ -67,7 +83,7 @@ const CartHomeScreen = ({
           <View>
             <Text
               numberOfLines={3}
-              style={styles.titleAndPrice}>{`${name}`}</Text>
+              style={styles.titleAndPrice}>{`${Product?.name}`}</Text>
             <Text
               style={[
                 styles.titleAndPrice,
@@ -78,7 +94,7 @@ const CartHomeScreen = ({
         <View style={styles.pmainView}>
           <View style={styles.mainBorder}>
             <TouchableOpacity
-              onPress={() => alert('item')}
+              onPress={() => AddItem( totalPrice,  Product.id, id  )}
               style={styles.plusView}>
               <Icon name="plus" style={{height: 11, width: 11}} />
             </TouchableOpacity>
@@ -109,7 +125,7 @@ const CartHomeScreen = ({
           home
           navigation={navigation}
         />
-        {cartList.length !== 0 ? (
+        { loading ? <Loading animating={loading} /> :  cartList.length !== 0 ? (
           <View>
             <View style={styles.topView}>
               <Text
@@ -117,7 +133,7 @@ const CartHomeScreen = ({
               <Text
                 style={styles.cartTitleAndTotal}>{`Total: ${totalPrice}`}</Text>
             </View>
-            {cartList.map(item => {
+            {cartItems?.map(item => {
               return <ItemInCart {...item} />;
             })}
             {/* cart detail */}
@@ -167,7 +183,7 @@ const CartHomeScreen = ({
       <View style={{paddingVertical: 10, backgroundColor: '#fff'}}>
         <View style={{padding: 10}}>
           <Button
-            onButtonPress={() => navigation.navigate('CheckOut')}
+            onButtonPress={() => navigation.navigate('CheckOutScreen')}
             title={'Proceed to checkout'}
           />
         </View>
@@ -177,3 +193,7 @@ const CartHomeScreen = ({
 };
 
 export default CartHomeScreen;
+
+
+// api call -> response -> redux -> cmponent render howa -> 
+// api  call -> response -> add to cart call => response -> id -> quatity-> price -> totoal brha dea 

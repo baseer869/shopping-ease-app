@@ -1,14 +1,12 @@
 import React, {useEffect} from 'react';
 import CartHomeScreen from './CartHomeScreen'
 import { connect } from 'react-redux';
-import { clearCartAction, listCartActionHandler, removeFromCart } from '../../redux/actions/cart';
+import { clearCartAction, listCartActionHandler, removeFromCart, AddToCartActionHandler } from '../../redux/actions/cart';
 import { addToCart } from './../../redux/actions/cart';
 import {View, Text, Image } from 'react-native';
 
 
 const index = (props) => {
-   
-
     return (
        <CartHomeScreen {...props}/>
     )
@@ -16,7 +14,7 @@ const index = (props) => {
 
 
 const mapStateToProps =(store) =>{
-
+ console.log('cart in page--->', store.cart.cart[0])
    const transformCartItem = []
 for (let key in store.cart.items ) {
    transformCartItem.push({
@@ -29,16 +27,17 @@ for (let key in store.cart.items ) {
    })
 }
     return {
-       cartItems: transformCartItem,
-       totalAmount: store.cart.totalAmount,
-       subTotalCounter: store.cart.subTotalCounter
+      //  cartListItem: store.cart.cart,
+       cartItems: store.cart.cart[0],
+      //  totalAmount: store.cart.totalAmount,
+      //  subTotalCounter: store.cart.subTotalCounter
     }
 }
 
 const mapDispatchToProps = (dispatch) =>{
    return {
       clearCartAction: () => dispatch(clearCartAction()),
-      addItemToCart: (product) => dispatch(addToCart(product)),
+      addItemToCart : (data) => dispatch(AddToCartActionHandler(data)),
       removeFromCart :(product) => dispatch(removeFromCart(product)),
       listCart: (id)=> dispatch(listCartActionHandler(id)),
    }

@@ -1,4 +1,4 @@
-import {ADD_TO_CART, CLEAR_CART} from '../constant/index';
+import {ADD_TO_CART, CLEAR_CART, SET_CART} from '../constant/index';
 import CartItems from './../models/cart-items';
 import {REMOVE_FROM_CART} from './../constant/index';
 
@@ -6,27 +6,42 @@ const initialState = {
   items: {},
   totalAmount: 0,
   subTotalCounter: 0,
+  cart:[]
 };
 
 export default (state = initialState, action) => {
-  console.log('cart reducer');
   switch (action.type) {
+    case SET_CART:
+      console.log('cart called-->', action.payload)
+      return {
+        ...state,
+        cart : [...state.cart, action.payload]
+    }
     case ADD_TO_CART:
-      const addedProduct = action.payload;
-      const name = addedProduct.name;
-      const price = addedProduct.price;
-      //   check wheter that product is part of cart items or not
+      console.log('add to cart', action.payload)
+      
+      
       let updatedOrNewCartItem;
-      if (state.items[addedProduct.id]) {
+
+      state.cart[0].map(  (item)=>{
+        if(item.id == action.payload){
+          // console.log('id in red-->',  item.id, action.payload )
+          console.log('is set-->', {...item.product, quantity: quantity+1})
+          return {...item, quantity: quantity+1};
+        }
+        console.log('item-->', item)
+      } );
+      
+      if (state.cart[addedProduct.ProductId]) {
         updatedOrNewCartItem = new CartItems(
-          state.items[addedProduct.id].quantity + 1,
-          name,
-          price,
-          state.items[addedProduct.id].sum + price,
-          state.subTotalCounter + 1,
+          state.cart[addedProduct.ProductId].quantity + 1,
+          // price,
+          // state.items[addedProduct.ProductId].sum + price,
+          // state.subTotalCounter + 1,
         );
+        console.log('cart update-->',  updatedCartItems);
       } else {
-        updatedOrNewCartItem = new CartItems(1, name, price, price);
+        updatedOrNewCartItem = new CartItems(1, price, price);
       }
       return {
         ...state,

@@ -1,87 +1,108 @@
 import {StyleSheet} from 'react-native';
+import Theme from '../../theme/colors';
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    // paddingBottom:20
+    backgroundColor:Theme.card
   },
-  addressView: {
-    backgroundColor: '#F0F4F7',
-    width: '95%',
-    height: 200,
-    borderRadius: 10,
-    padding: 15,
-    justifyContent: 'space-between',
+  topCartView:{
+    paddingVertical:15,
+    backgroundColor:'#fff',
+    paddingHorizontal:15,
+    marginBottom:8
   },
-  alignViewStyle: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+  title:{
+    fontSize:18,
+    fontWeight:'700',
+  lineHeight:18,
   },
-  paymentView: {
-    backgroundColor: '#F0F4F7',
-    width: '95%',
-    height: 100,
-    borderRadius: 10,
-    padding: 15,
-    justifyContent: 'space-between',
+  addressView:{
+    flexDirection:'row',
+    justifyContent:'space-between',
+    paddingHorizontal:30,
+    paddingVertical:5
   },
-  headerView: {
-    height: 39,
-    alignItems: 'center',
-    padding: 10,
-    paddingLeft: 15,
-    paddingRight: 15,
-    backgroundColor: '#F0F4F7',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+  text:{
+    fontSize:16,
+    opacity:0.3,
   },
-  detailView: {
-    width: '100%',
+  addressButton:{
+   borderWidth:1,
+   borderColor:Theme.primary,
+   borderRadius:4,
+   justifyContent:'center',
+   alignItems:'center',
+   paddingHorizontal:8,
+
   },
-  itemView: {
-    width: '100%',
-    paddingTop: 20,
-    paddingRight: 20,
-    paddingBottom: 20,
-    flexDirection: 'row',
-    alignItems: 'center',
+  itemContainer:{
+    backgroundColor:'#fff',
+    marginHorizontal:15,
+    marginVertical:4,
+    padding:10,
+    borderRadius:4
   },
-  cartView: {
-    width: '100%',
-    height: 45,
-    backgroundColor: '#F0F4F7',
-    marginTop: 20,
-    justifyContent: 'center',
-    alignItems: 'center',
+  innerItemContainer:{
+    flexDirection:'row',
   },
-  cartItemStyle: {
-    width: '100%',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+  name:{
+    fontWeight:'700',
+    fontSize:16,
+    width:200
   },
-  cartDetail: {
-    height: 130,
-    padding: 20,
-    width: '100%',
-    justifyContent: 'space-evenly',
+  price:{
+    fontWeight:'400',
+    fontSize:16,
   },
-  textArea: {
-    width: '92%',
-    height: 120,
-    borderRadius: 2,
-    borderWidth: 0.1,
-    borderColor: '#0B155A',
-    marginBottom: 20,
-    marginTop:20,
+  summaryView:{
+    paddingHorizontal:15,
+    paddingVertical:10,
+    marginTop:4,
+    backgroundColor:'#fff'
   },
-  buttonView:{
-    // position:'absolute',
-    // bottom:0,
-     width:'100%',
-    marginBottom:10,
-    marginTop:10
+  textView:{
+    marginTop:10,
+    flexDirection:'row',
+    justifyContent:'space-between',
+    alignItems:'center'
+  },
+  bottomView:{
+      backgroundColor:Theme.card,    
+  },
+  innerview:{
+    backgroundColor:'#fff',
+    paddingHorizontal:20,
+    paddingVertical:20,
+    flexDirection:'row',
+    justifyContent:'space-between',
+    alignItems:'center',
+    marginTop:6
+  },
+  modelView:{
+    // flex:1,
+    backgroundColor:'#fff',
+    paddingVertical:15,
+    paddingHorizontal:10,
+    borderRadius:4
+  },
+  inputView:{
+    justifyContent:'center',
+    paddingVertical:10
+  },
+  inputText:{
+  fontSize:16,
+  fontWeight:'700',
+  fontStyle:'normal',
+  lineHeight:22
+  },
+  input:{
+    width:'95%',
+    borderWidth:1,
+    borderColor:Theme.border,
+    borderRadius:4,
+    marginTop:2,
+    // alignSelf:'c'
   }
 });
 
