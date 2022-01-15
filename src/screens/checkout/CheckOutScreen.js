@@ -133,7 +133,6 @@ const CheckOutScreen = ({navigation, listCart}) => {
       </View>
       <Modal
         isVisible={isVisible}
-        animat
         animationIn={'bounceInUp'}
         animationOut={'slideOutDown'}
         backdropColor={'black'}>

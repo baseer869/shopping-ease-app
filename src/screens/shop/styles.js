@@ -1,4 +1,5 @@
 import {StyleSheet} from 'react-native';
+import Theme from '../../theme/colors';
 
 const styles = StyleSheet.create({
   container: {
@@ -75,10 +76,9 @@ const styles = StyleSheet.create({
   img: {
     width: 200,
     height: 100,
-    borderTopLeftRadius:12,
-    borderTopRightRadius:12,
-    resizeMode:'cover'
-    
+    borderTopLeftRadius: 12,
+    borderTopRightRadius: 12,
+    resizeMode: 'cover',
   },
   rate: {
     fontSize: 14,
@@ -116,12 +116,45 @@ const styles = StyleSheet.create({
     lineHeight: 17,
     letterSpacing: 0.7,
   },
-  exploreTitle:{
+  exploreTitle: {
     fontSize: 18,
     fontStyle: 'normal',
     fontWeight: '700',
     lineHeight: 17,
     letterSpacing: 0.7,
+  },
+  modelView: {
+    height: 200,
+    width: 350,
+    borderRadius: 4,
+    alignSelf: 'center',
+    backgroundColor: '#fff',
+    paddingVertical:10
+  },
+  buttonView:{
+    paddingTop:70,
+    justifyContent:'space-between',
+    alignItems:'center',
+    flexDirection:'row',
+    alignItems:'center',
+    paddingHorizontal:30
+  },
+  button1:{
+     borderColor:Theme.border,
+     borderWidth:1,
+     justifyContent:'center',
+     alignItems:'center',
+     paddingHorizontal:10,
+     paddingVertical:8,
+     borderRadius:4
+  },
+  button2:{
+    backgroundColor:Theme.primary,
+    justifyContent:'center',
+    alignItems:'center',
+    paddingHorizontal:10,
+    paddingVertical:8,
+    borderRadius:4
   }
 });
 

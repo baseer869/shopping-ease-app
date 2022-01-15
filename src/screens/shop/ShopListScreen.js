@@ -16,7 +16,7 @@ import RBSheet from 'react-native-raw-bottom-sheet';
 import Theme from '../../theme/colors';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Loading from '../../components/activityIndicator/ActivityIndicator';
-
+import Modal from 'react-native-modal';
 
 function Item({shop_name, description, rate, navigation, id}) {
   return (
@@ -42,7 +42,7 @@ function Item({shop_name, description, rate, navigation, id}) {
         </View>
       </View>
       <TouchableOpacity
-        onPress={() => navigation.navigate('ShopDashBoard', { id: id })}
+        onPress={() => navigation.navigate('ShopDashBoard', {id: id})}
         activeOpacity={0.4}
         style={{
           //pink
@@ -77,11 +77,8 @@ function Item({shop_name, description, rate, navigation, id}) {
   );
 }
 
-
 const ShopListScreen = ({listMarket, navigation, route, listShop}) => {
-  
   let {name, id} = navigation.state?.params?.data;
-
 
   const [shopList, setShopList] = useState([]);
   const [loading, setLoading] = React.useState(false);
@@ -92,6 +89,7 @@ const ShopListScreen = ({listMarket, navigation, route, listShop}) => {
   const [marketList, setMarket] = React.useState([]);
   const [loader, setloader] = useState(false);
   const [marketName, setMarketName] = useState('');
+  const [isVisible, setVisible] = useState(false);
 
   async function listMarketByCity(id) {
     setLoading(true);
@@ -107,6 +105,12 @@ const ShopListScreen = ({listMarket, navigation, route, listShop}) => {
         setLoading(false);
       }
     }
+  }
+
+  async function cleartCart() {
+    setVisible(true);
+    let clear = false;
+    return clear;
   }
 
   async function listShopBaseOnMarket(id, name) {
@@ -133,14 +137,13 @@ const ShopListScreen = ({listMarket, navigation, route, listShop}) => {
   }
 
   useEffect(() => {
-    listMarket();
     listShopBaseOnMarket(id);
     setMarketName(name);
   }, []);
 
-// useEffect(()=>{
+  // useEffect(()=>{
 
-// },)
+  // },)
 
   const sheetRef = React.useRef(null);
   function closeSheet() {
@@ -156,8 +159,7 @@ const ShopListScreen = ({listMarket, navigation, route, listShop}) => {
           height: 400,
           borderRadius: 8,
         }}>
-        {/* <RenderHeader />   */}
-        <Text style={styles.exploreTitle}>{'Explore market'}</Text>
+        <Text style={styles.exploreTitle}>{'Explore more market'}</Text>
         {loading && <Loading animating={loading} />}
         <FlatList
           data={marketList}
@@ -167,13 +169,15 @@ const ShopListScreen = ({listMarket, navigation, route, listShop}) => {
             return <MarketItem {...item} />;
           }}
           keyExtractor={(item, index) => String(item?.id + index)}
-          // ItemSeparatorComponent={() => (
-          //   <View style={{height: 0.6, backgroundColor: '#000'}} />
-          // )}
         />
       </View>
     </>
   );
+
+  function changeMarket(id, name) {
+    setVisible(true);
+    // listShopBaseOnMarket(id, name)
+  }
 
   const RenderHeader = () => (
     <View
@@ -202,7 +206,7 @@ const ShopListScreen = ({listMarket, navigation, route, listShop}) => {
     return (
       <TouchableOpacity
         activeOpacity={0.5}
-        onPress={() => listShopBaseOnMarket(id, name)}
+        onPress={() => changeMarket(id, name)}
         style={styles.list}>
         <Text style={styles.listTitle}>{name}</Text>
         <Image
@@ -214,102 +218,134 @@ const ShopListScreen = ({listMarket, navigation, route, listShop}) => {
   }
 
   return (
-    <View style={styles.container}>
-      <ScrollView>
-        <AppHeader navigation={navigation} title={ marketName? marketName:'kkk'} onMenuPress={() => loadMarket()} />
-        <Loading animating={loader} />
-        {shopList ? (
-          <View style={styles.shopListContainer}>
-            <Text style={styles.text}>{shopList && shopList[0]?.name}</Text>
-            <FlatList
-              horizontal={true}
-              showsHorizontalScrollIndicator={false}
-              data={shopList[0]?.Shops}
-              keyExtractor={(item, index) => item + index}
-              renderItem={({item}) => (
-                <Item navigation={navigation} {...item} />
-              )}
-            />
-          </View>
-        ) : null}
-        {shopList ? (
-          <View style={styles.shopListContainer}>
-            <Text style={styles.text}>{shopList && shopList[1]?.name}</Text>
-            <FlatList
-              horizontal={true}
-              showsHorizontalScrollIndicator={false}
-              data={shopList[1]?.Shops}
-              keyExtractor={(item, index) => item + index}
-              renderItem={({item}) => (
-                <Item navigation={navigation} {...item} />
-              )}
-            />
-          </View>
-        ) : null}
-        {shopList ? (
-          <View style={styles.shopListContainer}>
-            <Text style={styles.text}>{shopList && shopList[2]?.name}</Text>
-            <FlatList
-              horizontal={true}
-              showsHorizontalScrollIndicator={false}
-              data={shopList[2]?.Shops}
-              keyExtractor={(item, index) => item + index}
-              renderItem={({item}) => (
-                <Item navigation={navigation} {...item} />
-              )}
-            />
-          </View>
-        ) : null}
-        {shopList ? (
-          <View style={styles.shopListContainer}>
-            <Text style={styles.text}>{shopList && shopList[3]?.name}</Text>
-            <FlatList
-              horizontal={true}
-              showsHorizontalScrollIndicator={false}
-              data={shopList[3]?.Shops}
-              keyExtractor={(item, index) => item + index}
-              renderItem={({item}) => (
-                <Item navigation={navigation} {...item} />
-              )}
-            />
-          </View>
-        ) : null}
-        <View
-          style={{
-            paddingVertical: 15,
-            flex: 1,
-            // paddingHorizontal: 6,
-            alignSelf: 'center',
-          }}>
-         <Text style={styles.text}>{'Others'}</Text>
-          <FlatList
-            data={shopList}
-            keyExtractor={(item, index) => item + index}
-            renderItem={({item}) => <Item navigation={navigation} {...item} />}
+    <>
+      <View style={styles.container}>
+        <ScrollView>
+          <AppHeader
+            navigation={navigation}
+            title={marketName ? marketName : 'kkk'}
+            onMenuPress={() => loadMarket()}
           />
+          <Loading animating={loader} />
+          {shopList ? (
+            <View style={styles.shopListContainer}>
+              <Text style={styles.text}>{shopList && shopList[0]?.name}</Text>
+              <FlatList
+                horizontal={true}
+                showsHorizontalScrollIndicator={false}
+                data={shopList[0]?.Shops}
+                keyExtractor={(item, index) => item + index}
+                renderItem={({item}) => (
+                  <Item navigation={navigation} {...item} />
+                )}
+              />
+            </View>
+          ) : null}
+          {shopList ? (
+            <View style={styles.shopListContainer}>
+              <Text style={styles.text}>{shopList && shopList[1]?.name}</Text>
+              <FlatList
+                horizontal={true}
+                showsHorizontalScrollIndicator={false}
+                data={shopList[1]?.Shops}
+                keyExtractor={(item, index) => item + index}
+                renderItem={({item}) => (
+                  <Item navigation={navigation} {...item} />
+                )}
+              />
+            </View>
+          ) : null}
+          {shopList ? (
+            <View style={styles.shopListContainer}>
+              <Text style={styles.text}>{shopList && shopList[2]?.name}</Text>
+              <FlatList
+                horizontal={true}
+                showsHorizontalScrollIndicator={false}
+                data={shopList[2]?.Shops}
+                keyExtractor={(item, index) => item + index}
+                renderItem={({item}) => (
+                  <Item navigation={navigation} {...item} />
+                )}
+              />
+            </View>
+          ) : null}
+          {shopList ? (
+            <View style={styles.shopListContainer}>
+              <Text style={styles.text}>{shopList && shopList[3]?.name}</Text>
+              <FlatList
+                horizontal={true}
+                showsHorizontalScrollIndicator={false}
+                data={shopList[3]?.Shops}
+                keyExtractor={(item, index) => item + index}
+                renderItem={({item}) => (
+                  <Item navigation={navigation} {...item} />
+                )}
+              />
+            </View>
+          ) : null}
+          <View
+            style={{
+              paddingVertical: 15,
+              flex: 1,
+              // paddingHorizontal: 6,
+              alignSelf: 'center',
+            }}>
+            <Text style={styles.text}>{'Others'}</Text>
+            <FlatList
+              data={shopList}
+              keyExtractor={(item, index) => item + index}
+              renderItem={({item}) => (
+                <Item navigation={navigation} {...item} />
+              )}
+            />
+          </View>
+        </ScrollView>
+        <RBSheet
+          ref={sheetRef}
+          closeOnDragDown={true}
+          closeOnPressMask={false}
+          style={{backgroundColor: '#fff'}}
+          customStyles={{
+            wrapper: {
+              backgroundColor: 'transparent',
+              borderRadius: 30,
+            },
+            container: {
+              backgroundColor: 'transparent',
+              borderRadius: 30,
+            },
+            draggableIcon: {
+              backgroundColor: '#000',
+            },
+          }}>
+          <RenderMarket />
+        </RBSheet>
+      </View>
+      <Modal isVisible={isVisible}>
+        <View style={styles.modelView}  >
+          <Text style={{fontSize: 22, fontWeight: '700', alignSelf: 'center'}}>
+            {`Changing market you lost\n current cart`}{' '}
+          </Text>
+
+          <View style={styles.buttonView}>
+            <TouchableOpacity style={styles.button1}  onPress={()=>setVisible(false)} >
+              <Text style={[styles.text, {fontWeight: '400', fontSize: 16}]}>
+                {`Close`}{' '}
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.button2}>
+              <Text
+                style={[
+                  styles.text,
+                  {fontWeight: '400', fontSize: 16, color: '#fff'},
+                ]}>
+                {`Confirm`}{' '}
+              </Text>
+            </TouchableOpacity>
+          </View>
         </View>
-      </ScrollView>
-      <RBSheet
-        ref={sheetRef}
-        closeOnDragDown={true}
-        closeOnPressMask={false}
-        style={{backgroundColor: '#fff'}}
-        customStyles={{
-          wrapper: {
-            backgroundColor: 'transparent',
-            borderRadius: 30,
-          },
-          container: {
-            backgroundColor: 'transparent',
-            borderRadius: 30,
-          },
-          draggableIcon: {
-            backgroundColor: '#000',
-          },
-        }}>
-        <RenderMarket />
-      </RBSheet>
-    </View>
+      </Modal>
+    </>
   );
 };
 

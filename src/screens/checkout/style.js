@@ -80,7 +80,6 @@ const styles = StyleSheet.create({
     marginTop:6
   },
   modelView:{
-    // flex:1,
     backgroundColor:'#fff',
     paddingVertical:15,
     paddingHorizontal:10,
