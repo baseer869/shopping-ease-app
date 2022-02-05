@@ -6,49 +6,56 @@ const initialState = {
   items: {},
   totalAmount: 0,
   subTotalCounter: 0,
-  cart:[]
+  cart: [],
+  loading: false
 };
 
 export default (state = initialState, action) => {
   switch (action.type) {
     case SET_CART:
-      console.log('cart called-->', action.payload)
       return {
         ...state,
-        cart : [...state.cart, action.payload]
-    }
-    case ADD_TO_CART:
-      console.log('add to cart', action.payload)
-      
-      
-      let updatedOrNewCartItem;
-
-      state.cart[0].map(  (item)=>{
-        if(item.id == action.payload){
-          // console.log('id in red-->',  item.id, action.payload )
-          console.log('is set-->', {...item.product, quantity: quantity+1})
-          return {...item, quantity: quantity+1};
-        }
-        console.log('item-->', item)
-      } );
-      
-      if (state.cart[addedProduct.ProductId]) {
-        updatedOrNewCartItem = new CartItems(
-          state.cart[addedProduct.ProductId].quantity + 1,
-          // price,
-          // state.items[addedProduct.ProductId].sum + price,
-          // state.subTotalCounter + 1,
-        );
-        console.log('cart update-->',  updatedCartItems);
-      } else {
-        updatedOrNewCartItem = new CartItems(1, price, price);
-      }
-      return {
-        ...state,
-        items: {...state.items, [addedProduct.id]: updatedOrNewCartItem},
-        totalAmount: state.totalAmount + price,
-        subTotalCounter: state.subTotalCounter + 1,
+        cart: [...state.cart, action.payload],
       };
+    case ADD_TO_CART:
+      let item = state.cart[0].find(item => item.id === action.payload);
+      console.log('id found--->', item);
+      if (item) {
+        console.log('cart id-->', item.id );
+        console.log('payload cart  id-->', action.payload );
+        // {...item, quantity: item.quantity + 1}
+        return {
+          ...state,
+          cart: state.cart[0].map(item =>
+            item.id === action.payload
+              ?  {...item, quantity:  console.log('qunatity--->', item.quantity + 1)}
+              : item,
+          ),
+        };
+      }
+      // return {
+      //   ...state,
+      //   cart: [...state.cart, action.payload],
+      //   // totalPrice: state.totalPrice + payload.price,
+      // };
+
+    // if (state.cart[addedProduct.ProductId]) {
+    //   updatedOrNewCartItem = new CartItems(
+    //     state.cart[addedProduct.ProductId].quantity + 1,
+    //     // price,
+    //     // state.items[addedProduct.ProductId].sum + price,
+    //     // state.subTotalCounter + 1,
+    //   );
+    //   console.log('cart update-->',  updatedCartItems);
+    // } else {
+    //   updatedOrNewCartItem = new CartItems(1, price, price);
+    // }
+    // return {
+    //   ...state,
+    //   items: {...state.items, [addedProduct.id]: updatedOrNewCartItem},
+    //   totalAmount: state.totalAmount + price,
+    //   subTotalCounter: state.subTotalCounter + 1,
+    // };
     case CLEAR_CART:
       return {
         ...state,

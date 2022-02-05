@@ -4,9 +4,12 @@ import Theme from '../../theme/colors'
 
 const styles = StyleSheet.create({
 container:{
-    height:55,
+    height:110,
+    justifyContent:'center',
+    backgroundColor:Theme.primary
+},
+innerContainer:{
     flexDirection:'row',
-    alignItems:"center",
     backgroundColor:Theme.primary
 },
 pickerContainer:{
@@ -26,6 +29,12 @@ title:{
     color:'#fff',
     letterSpacing:0.5,
     width:200
+},
+input:{
+    width:'100%',
+    color:"#000",
+    paddingLeft:10
+
 }
 
 })

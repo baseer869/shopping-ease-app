@@ -75,6 +75,7 @@ const DashBoard = ({navigation, listCategory, listProduct, listAllProduct}) => {
   }, [navigation]);
 
   function Item({name, description, rate, price, isAvaialbe, image}) {
+    
     return (
       <TouchableOpacity
         activeOpacity={0.8}

@@ -14,13 +14,20 @@ import {Icon} from 'react-native-vector-icons/MaterialCommunityIcons';
 import Theme from '../../theme/colors';
 import Button from '../../components/button';
 import Modal from 'react-native-modal';
-import NewInput from '../../components/input/NewInput';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 const CheckOutScreen = ({navigation, listCart}) => {
   const [loading, setLoading] = React.useState(false);
   const [cartList, setCartList] = React.useState([]);
   const [totalPrice, setTotal] = React.useState(null);
   const [isVisible, setIsVisible] = React.useState(false);
+  const [homeAddress, setHomeAddress] = React.useState('');
+  const [phoneNumber, setPhoneNumber] = React.useState('');
+  const [state, setState] = React.useState('');
+  const [address, setAddress] = React.useState('');
+
+
 
   async function listCartItem() {
     let id = 1;
@@ -36,6 +43,24 @@ const CheckOutScreen = ({navigation, listCart}) => {
       setTotal(null);
     }
   }
+
+async  function getData(){
+   let user = await AsyncStorage.getItem('@user');
+   console.log('user--->', user);
+   let data ={
+     id: 1,  //user id;  check dynamic;
+     homeAddress: homeAddress,
+     phone: phoneNumber,
+     address: address,
+   }
+   return data;
+ }
+
+  async function onSubmit(){
+          getData();
+      // then diapatch data to database
+  }
+
 
   useEffect(() => {
     listCartItem();
@@ -161,24 +186,44 @@ const CheckOutScreen = ({navigation, listCart}) => {
 
           <ScrollView>
             <View style={styles.inputView}>
-              <Text style={styles.inputText}>City</Text>
-              <TextInput placeholder="City" style={styles.input} />
+              <Text style={styles.inputText}>Home address</Text>
+              <TextInput
+                placeholder="Home"
+                value={homeAddress}
+                onChangeText={text => setHomeAddress(text)}
+                style={styles.input}
+              />
             </View>
             <View style={styles.inputView}>
-              <Text style={styles.inputText}>City</Text>
-              <TextInput placeholder="City" style={styles.input} />
+              <Text style={styles.inputText}>Phone number</Text>
+              <TextInput
+                placeholder="Phone number"
+                value={phoneNumber}
+                onChangeText={text => setPhoneNumber(text)}
+                style={styles.input}
+              />
             </View>
             <View style={styles.inputView}>
-              <Text style={styles.inputText}>City</Text>
-              <TextInput placeholder="City" style={styles.input} />
+              <Text style={styles.inputText}>State</Text>
+              <TextInput
+                placeholder="State"
+                value={state}
+                onChangeText={text => setState(text)}
+                style={styles.input}
+              />
             </View>
             <View style={styles.inputView}>
-              <Text style={styles.inputText}>City</Text>
-              <TextInput placeholder="City" style={styles.input} />
+              <Text style={styles.inputText}>Address</Text>
+              <TextInput
+                placeholder="Address"
+                value={address}
+                onChangeText={text => setAddress(text)}
+                style={styles.input}
+              />
             </View>
             <View style={{marginTop: 15}}>
               <Button
-                onButtonPress={() => alert('subkit address')}
+                onButtonPress={() => onSubmit()}
                 title={'Add Address'}
               />
             </View>

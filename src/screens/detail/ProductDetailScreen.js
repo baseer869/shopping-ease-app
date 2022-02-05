@@ -13,12 +13,13 @@ import styles from './style';
 import Swiper from '../../components/swiper';
 import commonStyle from '../../theme/style';
 import {COLLAPSE, ARROW_DOWN} from '../../theme/images';
+import {showMessage, hideMessage} from 'react-native-flash-message';
 
 const {WIDTH, HEIGHT} = Dimensions.get('window');
 
 const HomeDetailScreen = ({navigation, addItemToCart, route}) => {
   const {description, rate, name, price, id} = navigation.state.params?.item;
-  let cartItem = {price, id};
+  let cartItem = {price, id, name};
   const [selected, setSelected] = useState(true);
   useEffect(() => {
     return () => {};
@@ -30,7 +31,7 @@ const HomeDetailScreen = ({navigation, addItemToCart, route}) => {
   async function addToCart(item) {
    console.log('item in detail--->', item);
 
-    let {price, id} = item;
+    let {price, id, name} = item;
     
     let response = await addItemToCart( {
       price: parseInt(price),
@@ -39,6 +40,13 @@ const HomeDetailScreen = ({navigation, addItemToCart, route}) => {
     });
     if (response) {
       console.log('item added to cart', response);
+      showMessage({
+        message: `${name} added to cart`,
+        type: 'info',
+        onPress: ()=> {
+          navigation.navigate('Cart')
+         }
+      });
     } else {
       console.log('faild to add to cart');
     }

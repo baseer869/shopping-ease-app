@@ -10,9 +10,10 @@ import React from 'react';
 import AppNavigatior from './src/navigation/AppNavigation';
 import {Provider} from 'react-redux';
 import {configStore} from './src/store/configStore';
-import {LogBox} from 'react-native';
+import {LogBox, StatusBar} from 'react-native';
 import FlashMessage from 'react-native-flash-message';
 import {StyleSheet} from 'react-native';
+import Theme from './src/theme/colors';
 
 LogBox.ignoreLogs(['Warning: ...']); //Hide warnings
 
@@ -22,6 +23,7 @@ const store = configStore();
 const App: () => Node = () => {
   return (
     <Provider store={store}>
+    <StatusBar backgroundColor={Theme.primary} />
       <AppNavigatior />
       <FlashMessage
         titleStyle={styles.textStyle}

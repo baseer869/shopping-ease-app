@@ -18,7 +18,7 @@ import RegisterScreen from '../screens/register/index';
 import AccountInformationScreen from './../screens/profile/index';
 import ForgetPasswordScreen from '../screens/forgetpassword/index';
 import CheckOutScreen from './../screens/checkout/index';
-import SearchScreen from './../screens/search/SearchScreen';
+import SearchScreen from './../screens/search/index';
 import ChangePaymentScreen from './../screens/payment/ChangePaymentScreen';
 import FavouriteScreen from './../screens/favorite/index';
 import SearchShopScreen from './../screens/searchshop/SearchScreen';
@@ -141,6 +141,7 @@ let AppStack = createStackNavigator({
     ShopListScreen: ShopListScreen,  
     ShopDashBoard:DashBoard,
     ProductDetailScreen: ProductDetailScreen,
+    SearchScreen: SearchScreen,
     Profile: AccountInformationScreen,
     Cart: CartHomeScreen,
     CheckOutScreen: CheckOutScreen

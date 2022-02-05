@@ -1,10 +1,7 @@
 import React, {useEffect} from 'react';
 import CartHomeScreen from './CartHomeScreen'
 import { connect } from 'react-redux';
-import { clearCartAction, listCartActionHandler, removeFromCart, AddToCartActionHandler } from '../../redux/actions/cart';
-import { addToCart } from './../../redux/actions/cart';
-import {View, Text, Image } from 'react-native';
-
+import { clearCartAction, listCartActionHandler, removeFromCart, AddToCartActionHandler, RemoveCartActionHandler } from '../../redux/actions/cart';
 
 const index = (props) => {
     return (
@@ -14,7 +11,6 @@ const index = (props) => {
 
 
 const mapStateToProps =(store) =>{
- console.log('cart in page--->', store.cart.cart[0])
    const transformCartItem = []
 for (let key in store.cart.items ) {
    transformCartItem.push({
@@ -40,8 +36,15 @@ const mapDispatchToProps = (dispatch) =>{
       addItemToCart : (data) => dispatch(AddToCartActionHandler(data)),
       removeFromCart :(product) => dispatch(removeFromCart(product)),
       listCart: (id)=> dispatch(listCartActionHandler(id)),
+      removeItemFromCart: (data)=> dispatch(RemoveCartActionHandler(data)),
+
    }
 }
 
 
 export default connect(mapStateToProps, mapDispatchToProps) (index)
+
+
+// set list in redux 
+// if quantity updated then  on response call redux store with updated array; 
+ 

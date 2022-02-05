@@ -223,7 +223,7 @@ const ShopListScreen = ({listMarket, navigation, route, listShop}) => {
         <ScrollView>
           <AppHeader
             navigation={navigation}
-            title={marketName ? marketName : 'kkk'}
+            title={marketName ? marketName : null}
             onMenuPress={() => loadMarket()}
           />
           <Loading animating={loader} />

@@ -44,7 +44,6 @@ export const listAllProduct = (params, token) => {
 
 //LIST product 
 export const AddToCart = (params, token) => {
-    console.log('params==?', params)
     return Api(`${apiConstant.ADD_TO_CART}?id=${params?.ProductId}&userId=${params?.UserId}`, 'POST',  params, token )
 }  
 
@@ -52,4 +51,16 @@ export const AddToCart = (params, token) => {
 // list cart
 export const listCart = (id, token) => {
     return Api(`${apiConstant.LIST_CART}?id=${id}`, 'GET', token )
+} 
+
+
+
+// list cart
+export const RemoveItemCart = (data, token) => {
+    return Api(`${apiConstant.REMOVE_FROM_CART}`, 'POST', data,  token )
+} 
+
+// list cart
+export const filter = (text, token) => {
+    return Api(`${apiConstant.SEARCH}?search=${text}`, 'GET',  token )
 } 
