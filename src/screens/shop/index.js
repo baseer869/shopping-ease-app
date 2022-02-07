@@ -1,7 +1,7 @@
 import React from 'react'
 import ShopListScreen from './ShopListScreen';
 import {connect} from 'react-redux';
-import { listShopActionHandler,listShopHandler2, listCartActionHandler } from '../../redux/actions/shop';
+import { listShopActionHandler,listShopHandler2, listCartActionHandler, clearCartOnMarketChange, checkCartHandler } from '../../redux/actions/shop';
 
 const index = (props) => {
     return (
@@ -14,7 +14,9 @@ const mapDispatchToProps = (dispatch) => {
     return {
       listMarket:  (data) => dispatch(listShopActionHandler(data)),
       listShop:  (id) => dispatch(listShopHandler2(id)),
-      clearCart : (id) => dispatch(listCartActionHandler(id))
+      clearCart : (id) => dispatch(listCartActionHandler(id)),
+      clearCartOnMarketChange: (userId)=> dispatch(clearCartOnMarketChange(userId)),
+      checkCart: (userId)=> dispatch(checkCartHandler(userId))
     };
   };
   

@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
     backgroundColor:'#fff',
     marginHorizontal:15,
     marginVertical:4,
-    padding:10,
+    padding:4,
     borderRadius:4
   },
   innerItemContainer:{
@@ -102,6 +102,12 @@ const styles = StyleSheet.create({
     borderRadius:4,
     marginTop:2,
     // alignSelf:'c'
+  },
+  addressText:{
+    fontWeight:'700',
+    fontSize:14, 
+    fontStyle:'normal',
+    lineHeight:22
   }
 });
 

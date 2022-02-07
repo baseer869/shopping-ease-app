@@ -1,5 +1,5 @@
 import { ADD_TO_CART, CLEAR_CART,REMOVE_FROM_CART,  SET_CART} from '../constant/index';
-import { AddToCart, listCart, RemoveItemCart } from '../../../api/Methods';
+import { AddToCart, listCart, RemoveItemCart, updateUserProfile, updateCartStatus } from '../../../api/Methods';
 
 
 export const setCart = (payload) =>{
@@ -68,6 +68,34 @@ export const RemoveCartActionHandler =   data => dispatch => {
     RemoveItemCart(data)
       .then(response => {
         return resolve(response?.data);
+      })
+      .catch(() => {
+        return resolve(false);
+      });
+  });
+};
+
+
+export const updateUserProfileHandler =   data => dispatch => {
+  return new Promise(async function (resolve) {
+    updateUserProfile(data)
+      .then(response => {
+        return resolve(response);
+      })
+      .catch(() => {
+        return resolve(false);
+      });
+  });
+};
+
+
+
+
+export const updateCartStatusHanlder =   data => dispatch => {
+  return new Promise(async function (resolve) {
+    updateCartStatus(data)
+      .then(response => {
+        return resolve(response);
       })
       .catch(() => {
         return resolve(false);

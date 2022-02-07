@@ -3,7 +3,7 @@ import { View, Text, ActivityIndicator } from 'react-native'
 
 const Loading = ({animating}) => {
     return (
-        <ActivityIndicator animating={animating} size={'large'} color={'rgb(11,21,90)'} />
+        <ActivityIndicator animating={animating} size={'small'} color={'rgb(11,21,90)'} />
     )
 }
 

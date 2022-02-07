@@ -1,5 +1,5 @@
 import React, {useRef, useState} from 'react';
-import {View, Text, TouchableHighlight, TouchableOpacity} from 'react-native';
+import {View, Text, TouchableHighlight, TouchableOpacity, ActivityIndicator} from 'react-native';
 import styles from './style';
 import style from '../../theme/style';
 import Header from '../../components/header/index';
@@ -12,13 +12,16 @@ import {
   ADDRESS1,
   ADDRESS,
 } from '../../theme/images';
+import  AsyncStorage  from '@react-native-async-storage/async-storage';
 
-const AccountInformationScreen = ({navigation}) => {
-    const [username, setUsername] = useState('');
-    const [email, setEmail] = useState('');
-    const [phone, setPhone] = useState('');
-    const [address, setAddress] = useState('');
-    const [state, setState ] = useState('');
+const AccountInformationScreen = ({navigation, getUserInfo}) => {
+    const [username, setUsername] = useState(null);
+    const [email, setEmail] = useState(null);
+    const [phone, setPhone] = useState(null);
+    const [address, setAddress] = useState(null);
+    const [state, setState ] = useState(null);
+    const [city, setCity ] = useState(null);
+    const [loading, setLoading] = useState(false);
 
 
   const usernameRef = useRef();
@@ -32,7 +35,7 @@ const AccountInformationScreen = ({navigation}) => {
       case 'username':
         emailRef.current.focus();
         break;
-      case 'email':
+      case 'city':
         phoneRef.current.focus();
         break;
       case 'address':
@@ -41,62 +44,83 @@ const AccountInformationScreen = ({navigation}) => {
     }
   };
 
+ async function getUserProfile(){
+   setLoading(true)
+   let userInfo = await AsyncStorage.getItem("@user_info");
+   let user = JSON.parse(userInfo);
+   let response = await getUserInfo(user.email);
+   if(response){
+    let { phone, username, state, zipCode, city, address } = response.user;
+    setUsername(username)
+    setPhone(phone)
+    setAddress(address)
+    setState(state)
+    setCity(city)
+    setLoading(false);
+   }
+
+   
+ }
+
+React.useEffect( ()=>{
+    getUserProfile()
+  }, [] )
+
+
   return (
     <View style={[styles.container]}>
-      <Header title={'My Account'} goback width navigation={navigation} />
-      <View style={[styles.inputView]}>
-        <View style={{marginVertical: 10}}>
-          <Text style={styles.title}>{'Username'}</Text>
-          <NewInput
-            refer={usernameRef}
-            placeholder={'First Name'}
-            icon={ACCOUNT_IN_ACTIVE}
-            onSubmitEditing={() => nextFocus('username')}
-          />
-        </View>
-        <View style={{marginVertical: 10}}>
-          <Text style={styles.title}>{'Email'}</Text>
-          <NewInput
-            refer={emailRef}
-            placeholder={'Email Address'}
-            icon={MAIL}
-            onSubmitEditing={() => nextFocus('email')}
-          />
-        </View>
-        <View style={{marginVertical: 10}}>
-          <Text style={styles.title}>{'Phone'}</Text>
-          <NewInput
-            refer={phoneRef}
-            placeholder={'03xxxxxxxxx'}
-            icon={ACCOUNT_IN_ACTIVE}
-            onSubmitEditing={() => nextFocus('phone')}
-          />
-        </View>
-       
-        <View style={{marginVertical: 10}}>
-          <Text style={styles.title}>{'Address'}</Text>
-
-          <NewInput
-            refer={addressRef}
-            placeholder={'Address (Optional)'}
-            icon={ADDRESS1}
-            onSubmitEditing={() => nextFocus('address')}
-          />
-        </View>
+      <Header title={'My Account'} goback width home navigation={navigation} />
+    {  loading ? <ActivityIndicator animating={loading}/>:
+    
+   <View style={[styles.inputView]}>
+      <View style={{marginVertical: 10}}>
+        <Text style={styles.title}>{'Username'}</Text>
+        <NewInput
+          refer={usernameRef}
+          placeholder={'First Name'}
+          icon={ACCOUNT_IN_ACTIVE}
+          onSubmitEditing={() => nextFocus('username')}
+          value={username}
+        />
       </View>
-      <View style={{ top: 60, width: '100%', alignItems: 'center'}}>
-        <View style={{width:400}}>
-        <Button title={'Edit profile'} />
-        </View>  
-
-        <View style={{marginTop: 10, width: 400}}>
-          <Button
-            title={'Change password'}
-            onButtonPress={() => navigation.navigate('ForgetPassword')}
-            icActive
-          />
-        </View>
+      <View style={{marginVertical: 10}}>
+        <Text style={styles.title}>{'Email'}</Text>
+        <NewInput
+          refer={emailRef}
+          placeholder={'City'}
+          icon={MAIL}
+          onSubmitEditing={() => nextFocus('city')}
+          value={city}
+        />
       </View>
+      <View style={{marginVertical: 10}}>
+        <Text style={styles.title}>{'Phone'}</Text>
+        <NewInput
+          refer={phoneRef}
+          placeholder={'03xxxxxxxxx'}
+          icon={ACCOUNT_IN_ACTIVE}
+          onSubmitEditing={() => nextFocus('phone')}
+          value={phone}
+        />
+      </View>
+    
+      <View style={{marginVertical: 10}}>
+        <Text style={styles.title}>{'Address'}</Text>
+
+        <NewInput
+          refer={addressRef}
+          placeholder={'Address (Optional)'}
+          icon={ADDRESS1}
+          onSubmitEditing={() => nextFocus('address')}
+          value={address}
+        />
+      </View>
+      <View style={{width:400}}>
+      <Button title={'Edit profile'} />
+      </View> 
+    </View>
+  } 
+
     </View>
   );
 };

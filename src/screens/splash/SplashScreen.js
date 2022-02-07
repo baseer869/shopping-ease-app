@@ -9,17 +9,22 @@ const SplashScreen = ({navigation}) => {
     try {
       const token = await AsyncStorage.getItem('@user_token');
       const market_Info = await AsyncStorage.getItem('@city');
+      const user = await AsyncStorage.getItem('user');
+      console.log('usersdsfdf----->', user);
       console.log('Access ===>', token);
       console.log('market info ===>', market_Info);
-
-      if (token == null && market_Info == null) {
+      if(token === null) {
+        navigation.replace('Auth'); 
+      } else if ( market_Info == null) {
         navigation.replace('Auth'); 
       } else if (token !== null && market_Info !== null) {
-        navigation.replace('ShopListScreen');  //DashBoard of shops 
+        navigation.replace('App');  //DashBoard of shops 
       } else if (token !== null && market_Info == null) {
         navigation.navigate('ShopMapScreen');
       } 
-    } catch (e) {
+  }
+    
+    catch (e) {
       // error reading value
       console.log('splash error--->', e);
     }

@@ -34,7 +34,7 @@ const Button = ({
         <Image source={icon} style={{width: 25, height: 25, marginRight: 10}} />
       )}
       {loading ? (
-        <Loading />
+        <Loading animating={loading} />
       ) : (
         <Text
           style={ !icActive ? {

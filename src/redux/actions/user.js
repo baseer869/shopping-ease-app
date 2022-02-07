@@ -1,5 +1,5 @@
-import {loginMethod, registerMethod} from '../../../api/Methods';
-import {LOGIN_SUCCESS, LOGIN_USER, LOGIN_FAILED} from '../constant/index';
+import {loginMethod, registerMethod, userInfo, placeOrder,getOrder} from '../../../api/Methods';
+import {LOGIN_SUCCESS, LOGIN_USER, LOGIN_FAILED,  } from '../constant/index';
 
 export const loginActionHandler = data => dispatch => {
   dispatch({type: LOGIN_USER});
@@ -12,8 +12,8 @@ export const loginActionHandler = data => dispatch => {
         } else {
           dispatch({type: LOGIN_FAILED, payload: respData});
         }
-        let {code, token, name, email} = respData;
-        const response = {code, token, name, email};
+        let {code,userId, token, name, email} = respData;
+        const response = {userId, code, token, name, email};
         return resolve(response);
       })
       .catch(error => {
@@ -36,3 +36,43 @@ export const registerActionHandler =   data => dispatch => {
       });
   });
 };
+
+export const getUserInfoHandler =   data => dispatch => {
+  return new Promise(async function (resolve) {
+    userInfo(data)
+      .then(response => {
+        console.log(' register respnse ---->', response)
+        return resolve(response);
+      })
+      .catch(() => {
+        return resolve(false);
+      });
+  });
+};
+
+export const placeOrderHanlder =   data => dispatch => {
+  return new Promise(async function (resolve) {
+    placeOrder(data)
+      .then(response => {
+        return resolve(response);
+      })
+      .catch(() => {
+        return resolve(false);
+      });
+  });
+};
+
+
+export const getOrderHanlder =   data => dispatch => {
+  return new Promise(async function (resolve) {
+    getOrder(data)
+      .then(response => {
+        return resolve(response);
+      })
+      .catch(() => {
+        return resolve(false);
+      });
+  });
+};
+
+

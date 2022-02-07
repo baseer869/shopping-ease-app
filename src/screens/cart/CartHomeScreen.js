@@ -7,7 +7,7 @@ import commonStyle from '../../theme/style';
 import HorizontalLine from '../../components/horizontalLine/index';
 import Button from '../../components/button/index';
 import EmptyCart from '../../components/UI/EmptyCart';
-import {AsyncStorage} from '@react-native-async-storage/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Theme from '../../theme/colors';
 import Loading from '../../components/activityIndicator/ActivityIndicator';
@@ -26,7 +26,7 @@ const CartHomeScreen = ({
 }) => {
   const [loading, setLoading] = React.useState(true);
   const [cartList, setCartList] = React.useState([]);
-  const [cartTotalPrice, setTotal] = React.useState(null);
+  const [cartTotalPrice, setTotal] = React.useState(0);
 
   function clearCart() {
     clearCartAction();
@@ -34,40 +34,43 @@ const CartHomeScreen = ({
 
   async function listCartItem() {
     // let user = await AsyncStorage.getItem('user');
-    let id = 1;
-    let response = await listCart(id);
+    let user = await  AsyncStorage.getItem('@user_info');
+    let userInfo = JSON.parse(user);
+    let response = await listCart(userInfo.userId);
     if (response.status === 200) {
       setLoading(false);
       setCartList(response.data?.result);
-      setTotal(response.data?.cartTotal.cartTotal);
+      setTotal( parseInt( response.data?.cartTotal.cartTotal));
     } else if (response.status === 400) {
       setLoading(false);
       setCartList([]);
       setTotal(null);
     }
   }
-  console.log('cccc-->',cartTotalPrice)
+  console.log(typeof cartTotalPrice)
 
-  async function AddItem(totalPrice, ProductId, id) {
+  async function AddItem(totalPrice, ProductId, id, ShopId) {
     console.log(totalPrice, ProductId, id);
     if( cartTotalPrice && parseInt(cartTotalPrice)  === 10000  ){
      alert('Cart limit exedec'); 
     } else {
-
+     let user = await  AsyncStorage.getItem('@user_info');
+     let userInfo = JSON.parse(user);
     const response = await addItemToCart({
       ProductId: ProductId,
       price: parseInt(totalPrice),
-      UserId: 1,
-      id: id, //cart id;
+      UserId: userInfo.userId,
+      id: id,
     });
     if (response.data.result) {
       let {id} = response.data.result;
 
-      let productIndex = cartList.map(item => {
-        let productPrice = parseInt(item.Product.price);
+      let productIndex = cartList.map((item, index) => {
+        let productPrice = parseInt(item.Product.price);      
         if(item.id  === id ){
-          setTotal( cartTotalPrice+ productPrice );
+          setTotal(cartTotalPrice+  parseInt(productPrice)) 
         }
+         
         return item.id === id
           ? {
               ...item,
@@ -77,7 +80,6 @@ const CartHomeScreen = ({
             }
           : item;
       });
-      console.log('total price-->',productIndex )
       setCartList(productIndex);
     }
   }
@@ -86,22 +88,28 @@ const CartHomeScreen = ({
   // Remove quantity
   // RemoveQuantity
 
-  async function RemoveQuantity(price, quantity, productId, cartId) {
+  async function RemoveQuantity(price, quantity, productId, cartId, ShopId) {
+    let user = await  AsyncStorage.getItem('@user_info');
+    let userInfo = JSON.parse(user);
+    console.log('user updated--->', userInfo.userId);
     let data = {
       price: price,
-      UserId: 1,
+      UserId: userInfo.userId,
       ProductId: productId,
       quantity: quantity,
     };
     let response = await removeItemFromCart(data);
-    console.log('remove from cart', response);
     if (response.result) {
       let {id} = response.result;
 
-      let productIndex = cartList.map(item => {
+      let productIndex = cartList.map((item, index) => {
         let productPrice = parseInt(item.Product.price);
+        console.log('log id====>', item.quantity, index);
+        if( item.quantity  === 1){
+          alert('quntity enal want to delete')
+        } 
         if(item.id  === id ){
-          setTotal( cartTotalPrice + productPrice );
+          setTotal( cartTotalPrice - productPrice );
         }
         return item.id === id
           ? {
@@ -111,6 +119,7 @@ const CartHomeScreen = ({
             }
           : item;
       });
+      console.log('prouct index dataa', productIndex);
       setCartList(productIndex);
 
     }
@@ -126,7 +135,7 @@ const CartHomeScreen = ({
     };
   }, []);
 
-  function ItemInCart({image, quantity, id, totalPrice, Product}) {
+  function ItemInCart({image, quantity, id, totalPrice, Product, ShopId}) {
     return (
       <View style={styles.itemContainer}>
         <View style={styles.innerItemContainer}>
@@ -149,7 +158,7 @@ const CartHomeScreen = ({
         <View style={styles.pmainView}>
           <View style={styles.mainBorder}>
             <TouchableOpacity
-              onPress={() => AddItem(totalPrice, Product.id, id)}
+              onPress={() => AddItem(totalPrice, Product.id, id, ShopId)}
               style={styles.plusView}>
               <Icon name="plus" style={{height: 11, width: 11}} />
             </TouchableOpacity>
@@ -158,7 +167,7 @@ const CartHomeScreen = ({
             </View>
             <TouchableOpacity
               onPress={() =>
-                RemoveQuantity(Product.price, quantity, Product.id, id)
+                RemoveQuantity(Product.price, quantity, Product.id, id, ShopId)
               }
               style={styles.minusView}>
               <Icon name="minus" style={{height: 11, width: 11}} />
@@ -179,7 +188,6 @@ const CartHomeScreen = ({
           title={'Cart'}
           goback
           width
-          route={'Home'}
           home
           navigation={navigation}
         />

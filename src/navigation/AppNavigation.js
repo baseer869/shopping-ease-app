@@ -15,19 +15,22 @@ import CartHomeScreen from './../screens/cart/index';
 import AccountHomeScreen from '../screens/account/index'
 import LoginScreen from './../screens/login/index';
 import RegisterScreen from '../screens/register/index';
-import AccountInformationScreen from './../screens/profile/index';
+import AccountInformationScreen from './../screens/profile';
 import ForgetPasswordScreen from '../screens/forgetpassword/index';
 import CheckOutScreen from './../screens/checkout/index';
 import SearchScreen from './../screens/search/index';
 import ChangePaymentScreen from './../screens/payment/ChangePaymentScreen';
 import FavouriteScreen from './../screens/favorite/index';
 import SearchShopScreen from './../screens/searchshop/SearchScreen';
+import PlaceOrderScreen from './../screens/order/index';
+
 import AddAddressScreen from './../screens/addAddress/AddAddressScreen';
 import ShopMapScreen from '../screens/ShopScreen/index';
 import ShopListScreen from '../screens/shop/index';
 import DashBoard from './../screens/dashboard/index';
 import SplashScreen from '../screens/splash/SplashScreen';
 import DrawerItem from '../components/drawer/DrawerItem';
+
 
 const HomeStack = createStackNavigator({
     Home:{screen: HomeScreen},
@@ -144,7 +147,8 @@ let AppStack = createStackNavigator({
     SearchScreen: SearchScreen,
     Profile: AccountInformationScreen,
     Cart: CartHomeScreen,
-    CheckOutScreen: CheckOutScreen
+    CheckOutScreen: CheckOutScreen,
+    PlaceOrderScreen: PlaceOrderScreen
 
 },{
     initialRouteName:"ShopMapScreen",
@@ -176,14 +180,13 @@ Register: {screen: RegisterScreen}
 
 const MainStack = createStackNavigator({
 Splash: SplashScreen,
-// DashBoard: DashBoard ,
 Auth: AuthStack,
 App: DrawerStack,
 // App:BottomTabs,
 
 }, 
 {
-    initialRouteName:'App',
+    initialRouteName:'Splash',
     headerMode:'none',
     defaultNavigationOptions: {
         ...TransitionPresets.SlideFromRightIOS,

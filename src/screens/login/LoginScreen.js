@@ -49,13 +49,12 @@ const LoginScreen = ({login, navigation}) => {
     });
 
     if (response.code == 200) {
-      console.log('user response-->', response);
-      const isSave = AsyncStorage.setItem('@user_token', response?.token);
-      let {email, name} = response;
-      let user = {email, name};
-      console.log('userrr--->\n\n\n', user);
-      AsyncStorage.setItem('user', user); //logged user
-      if (isSave) {
+      const isSave = AsyncStorage.setItem("@user_token", response?.token);
+      // let {id, email, name} = response;
+      // let user = {id, email, name};
+       console.log('login--->', response);
+   let userInfo =  AsyncStorage.setItem("@user_info", JSON.stringify(response)); //logged user
+      if (userInfo) {
         setLoading(false);
         navigation.navigate('ShopMapScreen');
       }

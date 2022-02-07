@@ -17,6 +17,7 @@ import Theme from '../../theme/colors';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Loading from '../../components/activityIndicator/ActivityIndicator';
 import Modal from 'react-native-modal';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 function Item({shop_name, description, rate, navigation, id}) {
   return (
@@ -77,8 +78,15 @@ function Item({shop_name, description, rate, navigation, id}) {
   );
 }
 
-const ShopListScreen = ({listMarket, navigation, route, listShop}) => {
-  let {name, id} = navigation.state?.params?.data;
+const ShopListScreen = ({
+  listMarket,
+  navigation,
+  route,
+  listShop,
+  checkCart,
+  clearCartOnMarketChange,
+}) => {
+  let {name, id} = navigation.state.params?.data;
 
   const [shopList, setShopList] = useState([]);
   const [loading, setLoading] = React.useState(false);
@@ -90,13 +98,13 @@ const ShopListScreen = ({listMarket, navigation, route, listShop}) => {
   const [loader, setloader] = useState(false);
   const [marketName, setMarketName] = useState('');
   const [isVisible, setVisible] = useState(false);
+  const [marketId, setMarketId] = useState(null);
 
   async function listMarketByCity(id) {
     setLoading(true);
     let list;
     let city = 'islamabad'; // this could be user base
     list = await listMarket(city); //market load
-    console.log('lisststtt-->', list);
     if (list && list.code == 200) {
       setLoading(false);
       setMarket(list.data);
@@ -120,6 +128,7 @@ const ShopListScreen = ({listMarket, navigation, route, listShop}) => {
     setLoading(true);
     setloader(true);
     let list = await listShop(id);
+
     if (list && list.code == 200) {
       setLoading(false);
       setloader(false);
@@ -174,11 +183,28 @@ const ShopListScreen = ({listMarket, navigation, route, listShop}) => {
     </>
   );
 
-  function changeMarket(id, name) {
-    setVisible(true);
-    // listShopBaseOnMarket(id, name)
+  async function changeMarket(id, name) {
+    let user = await AsyncStorage.getItem('@user_info');
+    let userInfo = JSON.parse(user);
+    let response = await checkCart(userInfo.userId);
+    if (response.data.length > 0) {
+      setVisible(true);
+     setMarketName(name);
+      setMarketId(id);
+    } else {
+      listShopBaseOnMarket(id, name);
+    }
   }
 
+  async function clearCart() {
+    let user = await AsyncStorage.getItem('@user_info');
+    let userInfo = JSON.parse(user);
+    let response = await clearCartOnMarketChange(userInfo.userId);
+    if (response.data === 1 || response.status === 200) {
+      setVisible(false);
+      listShopBaseOnMarket(marketId, name);
+    }
+  }
   const RenderHeader = () => (
     <View
       style={{
@@ -227,7 +253,7 @@ const ShopListScreen = ({listMarket, navigation, route, listShop}) => {
             onMenuPress={() => loadMarket()}
           />
           <Loading animating={loader} />
-          {shopList ? (
+          {shopList.length > 0 ? (
             <View style={styles.shopListContainer}>
               <Text style={styles.text}>{shopList && shopList[0]?.name}</Text>
               <FlatList
@@ -240,7 +266,20 @@ const ShopListScreen = ({listMarket, navigation, route, listShop}) => {
                 )}
               />
             </View>
-          ) : null}
+          ) : (
+            <View
+              style={{flex: 1, justifyContent: 'center', alignItems: 'center', alignSelf:'center'}}>
+              <Text
+                style={{
+                  fontSize: 18,
+                  fontWeight: '700',
+                  fontStyle: 'normal',
+                  letterSpacing: 0.4,
+                }}>
+                {'Oops... there is no registered\nstore in this market'}
+              </Text>
+            </View>
+          )}
           {shopList ? (
             <View style={styles.shopListContainer}>
               <Text style={styles.text}>{shopList && shopList[1]?.name}</Text>
@@ -283,7 +322,7 @@ const ShopListScreen = ({listMarket, navigation, route, listShop}) => {
               />
             </View>
           ) : null}
-          <View
+          {  shopList.length >0 ? <View
             style={{
               paddingVertical: 15,
               flex: 1,
@@ -298,7 +337,8 @@ const ShopListScreen = ({listMarket, navigation, route, listShop}) => {
                 <Item navigation={navigation} {...item} />
               )}
             />
-          </View>
+          </View>: null
+          }
         </ScrollView>
         <RBSheet
           ref={sheetRef}
@@ -322,18 +362,22 @@ const ShopListScreen = ({listMarket, navigation, route, listShop}) => {
         </RBSheet>
       </View>
       <Modal isVisible={isVisible}>
-        <View style={styles.modelView}  >
+        <View style={styles.modelView}>
           <Text style={{fontSize: 22, fontWeight: '700', alignSelf: 'center'}}>
             {`Changing market you lost\n current cart`}{' '}
           </Text>
 
           <View style={styles.buttonView}>
-            <TouchableOpacity style={styles.button1}  onPress={()=>setVisible(false)} >
+            <TouchableOpacity
+              style={styles.button1}
+              onPress={() => setVisible(false)}>
               <Text style={[styles.text, {fontWeight: '400', fontSize: 16}]}>
                 {`Close`}{' '}
               </Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.button2}>
+            <TouchableOpacity
+              onPress={() => clearCart()}
+              style={styles.button2}>
               <Text
                 style={[
                   styles.text,

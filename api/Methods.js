@@ -64,3 +64,36 @@ export const RemoveItemCart = (data, token) => {
 export const filter = (text, token) => {
     return Api(`${apiConstant.SEARCH}?search=${text}`, 'GET',  token )
 } 
+
+export const clearCart = (id, token) => {
+    return Api(`${apiConstant.CLEAR_CART}?UserId=${id}`, 'POST',  token )
+} 
+
+
+export const checkCart = (id, token) => {
+    return Api(`${apiConstant.CHECK_CART}?UserId=${id}`, 'GET',  token )
+} 
+
+
+export const userInfo = (id, token) => {
+    return Api(`${apiConstant.USER_INFO}?id=${id}`, 'GET',  token )
+} 
+
+
+export const updateUserProfile = (data, token) => {
+    return Api(`${apiConstant.UPDATE_PROFILE}`, 'POST', data, token )
+} 
+
+export const placeOrder = (data, token) => {
+    return Api(`${apiConstant.PLACE_ORDER}`, 'POST', data, token )
+} 
+
+
+export const getOrder = (data, token) => {
+    return Api(`${apiConstant.GET_ORDER}`, 'POST', data, token )
+} 
+
+
+export const updateCartStatus = (data, token) => {
+    return Api(`${apiConstant.UPDATE_CART_STATUS}?id=${data.id}`, 'POST', data, token )
+} 

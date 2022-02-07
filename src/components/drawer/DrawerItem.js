@@ -19,19 +19,29 @@ function Item({title, icon, onItemPress}) {
 }
 
 const DrawerItem = ({navigation}) => {
-let user;
+  const [user, setUser] = React.useState(null)
+let userInfo;
 
-async function getUser(){
-  user =  await AsyncStorage.getItem('user');
+ async function getUser(){
+  userInfo = await   AsyncStorage.getItem("@user_info");
+  userInfo =  JSON.parse(userInfo); 
+  setUser(userInfo)
 
+}
+
+ function logout() {
+   let logout =  AsyncStorage.removeItem("@user_token");
+   let userinfo =  AsyncStorage.removeItem("@user_info");
+
+
+   if(logout){
+     navigation.replace('Auth');
+   }
 }
 
 React.useEffect(()=>{
  getUser()  
 },[])
-
- console.log('user--->', JSON.stringify(user))
-
   return (
     <View style={styles.drwerConatiner}>
       <View style={{flexDirection: 'row', alignItems: 'center', padding: 10}}>
@@ -45,9 +55,12 @@ React.useEffect(()=>{
           }}
         />
         <Text style={[styles.title, {fontWeight: '700'}]}>
-          {`Welcome${user?.name}`}
+          {`Welcome ${user?.name}`}
         </Text>
       </View>
+        <Text numberOfLines={1} style={{fontWeight: '700', fontSize:14, color: Theme.primary, paddingLeft:75, paddingVertical:4, bottom:20}}>
+          {`${user?.email}`}
+        </Text>
       <View style={{height: 2, backgroundColor: Theme.card}} />
       <View style={{paddingTop: 30}}>
         <Item
@@ -88,7 +101,7 @@ React.useEffect(()=>{
         <View style={{height: 2, backgroundColor: Theme.card}} />
         <Item
           title={'Logout'}
-          onItemPress={() => navigation.navigate('Profile')}
+          onItemPress={() => logout()}
           icon={'logout'}
         />
       </View>

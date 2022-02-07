@@ -1,4 +1,4 @@
-import { listShopMethod, listShop, listShopCategory, listProduct,  listAllProduct, filter } from '../../../api/Methods';
+import { listShopMethod, listShop, checkCart, listShopCategory, listProduct,  listAllProduct, filter,clearCart } from '../../../api/Methods';
 
 export const addShop = (payload) =>{
     return {
@@ -95,7 +95,6 @@ export const filterAndSearchProduct =   text => dispatch => {
   return new Promise(async function (resolve) {
     filter(text)
       .then(response => {
-        console.log('respnse---->', response)
         return resolve(response?.data);
       })
       .catch(() => {
@@ -103,3 +102,33 @@ export const filterAndSearchProduct =   text => dispatch => {
       });
   });
 };
+
+export const clearCartOnMarketChange =   id => dispatch => {
+  return new Promise(async function (resolve) {
+    clearCart(id)
+      .then(response => {
+        console.log('cart reponse---->', response)
+        return resolve(response);
+      })
+      .catch(() => {
+        return resolve(false);
+      });
+  });
+};
+
+
+export const checkCartHandler =   id => dispatch => {
+  console.log('id-->', id)
+  return new Promise(async function (resolve) {
+    checkCart(id)
+      .then(response => {
+        console.log('check cart reponse---->', response)
+        return resolve(response);
+      })
+      .catch(() => {
+        return resolve(false);
+      });
+  });
+};
+
+

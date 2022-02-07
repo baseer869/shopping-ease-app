@@ -15,6 +15,7 @@ const NewInput = ({
   active,
   border
 }) => {
+  console.log('value',value)
   return (
     <TextInput
       style={border? styles.input: styles.input2 }

@@ -14,11 +14,11 @@ import Swiper from '../../components/swiper';
 import commonStyle from '../../theme/style';
 import {COLLAPSE, ARROW_DOWN} from '../../theme/images';
 import {showMessage, hideMessage} from 'react-native-flash-message';
-
+import  AsyncStorage  from '@react-native-async-storage/async-storage';
 const {WIDTH, HEIGHT} = Dimensions.get('window');
 
 const HomeDetailScreen = ({navigation, addItemToCart, route}) => {
-  const {description, rate, name, price, id} = navigation.state.params?.item;
+  const {description, rate, name, price, id, shopId} = navigation.state.params?.item;
   let cartItem = {price, id, name};
   const [selected, setSelected] = useState(true);
   useEffect(() => {
@@ -32,11 +32,14 @@ const HomeDetailScreen = ({navigation, addItemToCart, route}) => {
    console.log('item in detail--->', item);
 
     let {price, id, name} = item;
-    
+    let user = await  AsyncStorage.getItem('@user_info');
+    let userInfo = JSON.parse(user);
+    console.log('user updated--->', userInfo.userId); 
     let response = await addItemToCart( {
       price: parseInt(price),
-      UserId: 1,
+      UserId: userInfo.userId,
       ProductId: id,
+      shop_id: shopId
     });
     if (response) {
       console.log('item added to cart', response);
@@ -44,7 +47,7 @@ const HomeDetailScreen = ({navigation, addItemToCart, route}) => {
         message: `${name} added to cart`,
         type: 'info',
         onPress: ()=> {
-          navigation.navigate('Cart')
+          navigation.replace('Cart')
          }
       });
     } else {
@@ -55,7 +58,7 @@ const HomeDetailScreen = ({navigation, addItemToCart, route}) => {
 
   return (
     <View style={[styles.container]}>
-      <Header title={name} goback navigation={navigation} />
+      <Header title={name} goback home navigation={navigation} />
       <ScrollView>
         <Image
           source={require('../../../assets/stylo.jpeg')}

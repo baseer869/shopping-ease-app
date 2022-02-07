@@ -1,7 +1,8 @@
 import React from 'react'
 import CheckOutScreen from './CheckOutScreen'
 import { connect } from 'react-redux';
-import { listCartActionHandler } from '../../redux/actions/cart';
+import { listCartActionHandler , updateUserProfileHandler, updateCartStatusHanlder } from '../../redux/actions/cart';
+import { getUserInfoHandler, placeOrderHanlder,  } from './../../redux/actions/user';
 
 
 
@@ -34,7 +35,11 @@ const mapStateToProps =(store) =>{
 
  function mapDispatchToProps(dispatch) {
     return{
-       listCart: (id) => dispatch(listCartActionHandler(id))
+       listCart: (id) => dispatch(listCartActionHandler(id)),
+       updatedProile: (data) => dispatch(updateUserProfileHandler(data)),
+       getUserInfo : (id) => dispatch(getUserInfoHandler(id)),
+       placeOrder: (data)=> dispatch(placeOrderHanlder(data)), 
+       updateCartStatus: (data) => dispatch(updateCartStatusHanlder(data))
     }
 
  }
